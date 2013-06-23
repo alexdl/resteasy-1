@@ -1,3 +1,1 @@
-# Used with Heroku
-web: sh target/bin/resteasy
-java.runtime.version=1.7
+web: java -cp target/classes:target/dependency/* resteasy
