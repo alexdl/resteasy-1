@@ -1,4 +1,4 @@
-resteasy
+RestEasy Application
 ========
 
-App with MongoDB support and API services. Used for bed and breakfast reservations.
+App with MongoDB support and API services. Used for hospitality reservations, billing, travel assistance, and more.
