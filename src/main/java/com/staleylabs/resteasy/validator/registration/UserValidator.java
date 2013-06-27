@@ -1,6 +1,9 @@
 package com.staleylabs.resteasy.validator.registration;
 
+import com.staleylabs.resteasy.dao.UserDao;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
@@ -20,6 +23,9 @@ public class UserValidator {
     private static final String EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+    @Autowired
+    private UserDao userDao;
+
     /**
      * Validates a given email address to verify that it is in the form of a correct syntax.
      *
@@ -27,6 +33,23 @@ public class UserValidator {
      * @return <code>true</code> if the email address does match a correct email syntax. <code>false</code> otherwise.
      */
     public boolean validateEmailString(String emailAddress) {
+        log.debug("Matching email string against custom regex values.");
+
         return Pattern.matches(EMAIL_REGEX, emailAddress);
+    }
+
+    /**
+     * Validation that the username requested by the incoming user has not already been taken by another user in the
+     * system. Username <b>will be morphed to lowercase syntax</b> in order to perform comparison.
+     *
+     * @param username Username that has requested to be taken in by the user.
+     * @return <code>true</code> if the username can be used. <code>false</code> otherwise.
+     */
+    public boolean usernameExists(String username) {
+        String requested = StringUtils.lowerCase(username);
+
+        log.debug("Incoming username for check is: " + requested);
+
+        return userDao.getUserByUsername(requested) != null;
     }
 }
