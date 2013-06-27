@@ -9,6 +9,11 @@ package com.staleylabs.resteasy.commons;
 
 public class MongoCommons {
 
+    /* Database Connection and Property Settings */
+    public static final String MONGO_URL_PROPERTY = "MONGOHQ_URL";
+
+    public static final String DEFAULT_MONGO_URL = "mongodb://localhost/resteasy";
+
     /* Collections inside of the database */
     public static final String ORGANIZATION_COLLECTION = "organization";
 
