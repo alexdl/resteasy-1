@@ -1,7 +1,7 @@
 package com.staleylabs.resteasy;
 
-import com.newrelic.org.apache.log4j.Logger;
 import org.apache.catalina.startup.Tomcat;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 
