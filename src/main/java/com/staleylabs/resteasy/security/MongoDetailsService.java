@@ -2,6 +2,7 @@ package com.staleylabs.resteasy.security;
 
 import com.staleylabs.resteasy.dao.UserDao;
 import com.staleylabs.resteasy.domain.user.User;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
@@ -28,7 +29,7 @@ public class MongoDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.getUserByUsername(username);
+        User user = userDao.getUserByUsername(StringUtils.lowerCase(username));
 
         if (user == null) {
             return null;
@@ -37,13 +38,7 @@ public class MongoDetailsService implements UserDetailsService {
         Set<GrantedAuthorityImpl> authorities = new HashSet<>();
         authorities.add(new GrantedAuthorityImpl("ROLE_USER"));
 
-        return new org.springframework.security.core.userdetails.User(user.getId(),
-                user.getPasswordHash(),
-                user.isEnabled(),
-                true,
-                true,
-                true,
-                authorities);
-
+        return new org.springframework.security.core.userdetails.User(user.getId(), user.getPasswordHash(),
+                user.isEnabled(), true, true, true, authorities);
     }
 }
