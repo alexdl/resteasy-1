@@ -1,5 +1,6 @@
 package com.staleylabs.resteasy;
 
+import com.newrelic.org.apache.log4j.Logger;
 import org.apache.catalina.startup.Tomcat;
 
 import java.io.File;
@@ -13,8 +14,10 @@ import java.io.File;
 
 public class RestEasyApp {
 
+    private static final Logger log = Logger.getLogger(RestEasyApp.class.getName());
+
     public static void main(String[] args) throws Exception {
-        System.out.println("Launching the RestEasy application.");
+        log.info("Launching the RestEasy application.");
 
         String webappDirLocation = "src/main/java/com/staleylabs/resteasy/";
         Tomcat tomcat = new Tomcat();
@@ -29,7 +32,7 @@ public class RestEasyApp {
         tomcat.setPort(Integer.valueOf(webPort));
 
         tomcat.addWebapp("/", new File(webappDirLocation).getAbsolutePath());
-        System.out.println("configuring app with basedir: " + new File("./" + webappDirLocation).getAbsolutePath());
+        log.info("Configuring app with basedir: " + new File("./" + webappDirLocation).getAbsolutePath());
 
         tomcat.start();
         tomcat.getServer().await();
