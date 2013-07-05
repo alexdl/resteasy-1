@@ -1,6 +1,7 @@
 package com.staleylabs.resteasy.config;
 
 import com.mongodb.MongoURI;
+import com.mongodb.WriteConcern;
 import com.staleylabs.resteasy.commons.MongoCommons;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Bean;
@@ -42,7 +43,10 @@ public class MongoConfig {
      */
     @Bean
     public MongoTemplate mongoTemplate() throws Exception {
-        return new MongoTemplate(mongoDbFactory());
+        MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory());
+        mongoTemplate.setWriteConcern(WriteConcern.SAFE);
+
+        return mongoTemplate;
     }
 
     /**

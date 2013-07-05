@@ -15,8 +15,8 @@
     <context:component-scan base-package="com.staleylabs.resteasy"/>
 
     <import resource="classpath:application-context.xml" />
-    <import resource="classpath:application-data-context.xml" />
-    <import resource="classpath:application-security-context.xml" />
+    <import resource="classpath:spring-data.xml" />
+    <import resource="classpath:spring-security.xml" />
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix">

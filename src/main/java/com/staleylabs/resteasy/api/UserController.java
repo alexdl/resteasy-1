@@ -1,4 +1,4 @@
-package com.staleylabs.resteasy.controller.api;
+package com.staleylabs.resteasy.api;
 
 import com.staleylabs.resteasy.domain.user.User;
 import com.staleylabs.resteasy.dto.UserTO;

@@ -1,5 +1,6 @@
 package com.staleylabs.resteasy.domain.user;
 
+import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -21,7 +22,7 @@ public class User implements Serializable {
     @Id
     private String id;
 
-    @Indexed(unique = true)
+    @Indexed(direction = IndexDirection.ASCENDING, unique = true)
     private String username;
 
     private String firstName;
@@ -43,15 +44,15 @@ public class User implements Serializable {
     @Indexed(unique = true)
     private String emailAddress;
 
-    private String associatedOrganization;
-
-    private String passwordHash;
+    private String password;
 
     private boolean enabled;
 
     private long lastLoggedIn;
 
     private long creationDate;
+
+    private int role;
 
     public String getId() {
         return id;
@@ -85,12 +86,12 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmailAddress() {
@@ -157,14 +158,6 @@ public class User implements Serializable {
         this.zip = zip;
     }
 
-    public String getAssociatedOrganization() {
-        return associatedOrganization;
-    }
-
-    public void setAssociatedOrganization(String associatedOrganization) {
-        this.associatedOrganization = associatedOrganization;
-    }
-
     public long getLastLoggedIn() {
         return lastLoggedIn;
     }
@@ -179,6 +172,14 @@ public class User implements Serializable {
 
     public void setCreationDate(long creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
     }
 
     @Override

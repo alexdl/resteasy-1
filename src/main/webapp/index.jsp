@@ -1,5 +1,8 @@
 <html>
+<head>
+    <title>RestEasy!</title>
+</head>
 <body>
-<h2>Hello World!</h2>
+<h2>Welcome to Rest Easy!</h2>
 </body>
 </html>

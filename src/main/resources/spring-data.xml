@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/data/mongo
+                           http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+
+    <!-- We are using bCrypt to hash the password because it uses an automatic salt to the password. This way,
+         we do not have to worry about any salting on our own. -->
+    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+    <mongo:repositories base-package="com.staleylabs.resteasy.dao" />
+
+    <!-- The reset of the Mongo configuration can be found in MongoConfig configuration class. -->
+
+</beans>

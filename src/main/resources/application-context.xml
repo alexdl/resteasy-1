@@ -5,7 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <import resource="application-data-context.xml"/>
+    <import resource="spring-data.xml"/>
 
     <!-- Custom Messages -->
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"
