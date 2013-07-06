@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -33,8 +32,7 @@ public class MongoDetailsService implements UserDetailsService {
 
     private static final String ADMIN_USERNAME = "admin";
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private static final String ADMIN_PASSWORD = "$2a$10$loCCu0XEYBpfkv2ANUb4j.GAXwqc5OMCYnWUbCQ20JLNV6ZzVNu8C";
 
     @Autowired
     private UserDao userDao;
@@ -120,9 +118,7 @@ public class MongoDetailsService implements UserDetailsService {
             com.staleylabs.resteasy.domain.user.User adminUser = new com.staleylabs.resteasy.domain.user.User();
 
             adminUser.setUsername(ADMIN_USERNAME);
-
-            String password = passwordEncoder.encode(ADMIN_USERNAME);
-            adminUser.setPassword(password);
+            adminUser.setPassword(ADMIN_PASSWORD);
 
             adminUser.setEmailAddress("admin@staleylabs.com");
             adminUser.setFirstName(ADMIN_USERNAME);
