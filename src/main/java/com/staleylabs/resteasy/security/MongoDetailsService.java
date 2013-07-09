@@ -127,7 +127,7 @@ public class MongoDetailsService implements UserDetailsService {
             adminUser.setEnabled(true);
             adminUser.setCreationDate(1372918900);
             adminUser.setLastLoggedIn(1372918900);
-            adminUser.setRole(2);
+            adminUser.setRole(1);
 
             userDao.save(adminUser);
         }

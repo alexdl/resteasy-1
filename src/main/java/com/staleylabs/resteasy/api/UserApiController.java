@@ -24,12 +24,12 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/api/user")
-public class UserController {
+public class UserApiController {
 
     @Autowired
     protected UserService userService;
 
-    private static final Logger log = Logger.getLogger(UserController.class);
+    private static final Logger log = Logger.getLogger(UserApiController.class.getName());
 
     /**
      * API call that will get a specific user that has been selected by the application.

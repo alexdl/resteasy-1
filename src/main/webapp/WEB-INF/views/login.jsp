@@ -3,7 +3,6 @@
   User: sean
   Date: 7/3/13
   Time: 10:23 PM
-  To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -24,9 +23,12 @@
         </div>
     </form>
 
+    <footer>
+        <p>&copy; StaleyLabs 2013</p>
+    </footer>
+
 </div> <!-- /container -->
 
 <c:import url="static/jsscripts.jsp"/>
 </body>
-
-<c:import url="static/footer.jsp"/>
+</html>
