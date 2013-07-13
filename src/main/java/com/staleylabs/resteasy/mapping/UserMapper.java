@@ -7,7 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 /**
- * Created with IntelliJ IDEA.
+ * Used to map an entity bean to the bean sent to the UI or end user.
  *
  * @author Sean M. Staley
  * @version 1.0 (6/16/13)
@@ -33,8 +33,14 @@ public class UserMapper extends ModelMapper {
      */
     public UserTO transformUser(User user) {
 
-        log.debug("Transforming user object with ID of " + user.getId());
+        if (user != null) {
+            log.debug("Transforming user object with ID of " + user.getId());
 
-        return modelMapper.map(user, UserTO.class);
+            return modelMapper.map(user, UserTO.class);
+        }
+
+        log.info("User object was null and was not transformed.");
+
+        return null;
     }
 }
