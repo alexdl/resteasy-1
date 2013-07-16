@@ -7,7 +7,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <c:import url="static/header.jsp"/>
-<body>
+<body class="public">
 <div class="container">
 
     <form class="form-signin" action="j_spring_security_check" method="post">
@@ -22,10 +22,6 @@
             Not a user? <a href="/user/create">Create an account.</a>
         </div>
     </form>
-
-    <footer>
-        <p>&copy; StaleyLabs 2013</p>
-    </footer>
 
 </div> <!-- /container -->
 

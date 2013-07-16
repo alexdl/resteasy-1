@@ -10,4 +10,6 @@ $(document).ready(function () {
 
     // Function for all things dropdown.
     $('.dropdown-toggle').dropdown();
+
+    $('.alert').alert('close')
 });
