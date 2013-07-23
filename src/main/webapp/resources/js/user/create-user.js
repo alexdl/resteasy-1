@@ -10,6 +10,10 @@ var VALID_USERNAME_REGEX = /^[a-z0-9_-]{3,16}$/;
 
 var VALID_PASSWORD_REGEX = /^[a-z0-9_-]{6,18}$/;
 
+var geocoder = new google.maps.Geocoder();
+
+var GOOGLE_API = "AIzaSyBQZ0_uW5KIx_PQNoicqOBuTl7KMSltebs";
+
 // jQuery is ready to load once the page is loaded up.
 $(document).ready(function () {
 
@@ -51,6 +55,51 @@ $(document).ready(function () {
             }
         });
     }
+
+    function applyToAddress(addressArray, currentNode) {
+        var addressLine1 = addressArray[0].trim();
+        var city = addressArray[1].trim();
+        var state = addressArray[2].trim();
+        var returnObject = addressLine1;
+
+        if (currentNode != 'cityName') {
+            $('#cityName').val(city);
+        } else {
+            returnObject = city;
+        }
+
+        if (currentNode != 'stateCode') {
+            $('#stateCode').val(state);
+        } else {
+            returnObject = state;
+        }
+
+        return returnObject;
+    }
+
+    // Personal Address
+    $('#addressLine1').typeahead({
+        source: function (query, process) {
+            var options = {
+                types: ['(cities)'],
+                componentRestrictions: {country: "us"}
+            };
+
+            var service = new google.maps.places.AutocompleteService();
+
+            service.getPlacePredictions({ input: query, options: options}, function (predictions, status) {
+                if (status == google.maps.places.PlacesServiceStatus.OK) {
+                    process($.map(predictions, function (prediction) {
+                        return prediction.description;
+                    }));
+                }
+            });
+        },
+        updater: function (item) {
+            return applyToAddress(item.split(','), $(this).attr('id'));
+        }
+    });
+
 
     $('.nav-tabs').tab();
 

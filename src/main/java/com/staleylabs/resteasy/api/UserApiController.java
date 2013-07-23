@@ -1,5 +1,6 @@
 package com.staleylabs.resteasy.api;
 
+import com.staleylabs.resteasy.domain.user.RegisteringUser;
 import com.staleylabs.resteasy.domain.user.User;
 import com.staleylabs.resteasy.dto.UserTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
@@ -89,7 +90,7 @@ public class UserApiController {
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public UserTO createUser(@RequestBody User user, HttpServletResponse response) {
+    public UserTO createUser(@RequestBody RegisteringUser user, HttpServletResponse response) {
         UserTO userTO = null;
 
         try {

@@ -64,7 +64,12 @@ body {
     border-color: transparent;
 }
 
+.table {
+    width: 70% !important;
+}
+
 .table th, .table td {
     border-top: none;
-    width: 33% !important;
+    width: 23% !important;
+    vertical-align: middle;
 }

@@ -21,4 +21,5 @@
 <script type="text/javascript" src='<c:url value="/resources/vendor/bootstrap/js/bootstrap-tab.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/vendor/bootstrap/js/bootstrap-transition.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/vendor/bootstrap/js/bootstrap-typeahead.js"/>'></script>
+<script type="text/javascript" src='http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBQZ0_uW5KIx_PQNoicqOBuTl7KMSltebs&sensor=true'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/main.js"/>'></script>

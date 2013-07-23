@@ -1,6 +1,7 @@
 package com.staleylabs.resteasy.service.impl;
 
 import com.staleylabs.resteasy.dao.UserDao;
+import com.staleylabs.resteasy.domain.user.RegisteringUser;
 import com.staleylabs.resteasy.domain.user.User;
 import com.staleylabs.resteasy.dto.UserTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
@@ -81,7 +82,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserTO createUser(User user) throws InsufficientInformationException {
+    public UserTO createUser(RegisteringUser user) throws InsufficientInformationException {
+        User userObject = new User();
+
+        //TODO: Add user object stuff
+
         String username = StringUtils.lowerCase(user.getUsername());
         user.setUsername(username);
 
@@ -89,17 +94,17 @@ public class UserServiceImpl implements UserService {
         user.setPassword(password);
 
         long creationDate = new GregorianCalendar().getTimeInMillis();
-        user.setCreationDate(creationDate);
+        userObject.setCreationDate(creationDate);
 
         long lastLoggedInDate = new GregorianCalendar().getTimeInMillis();
-        user.setLastLoggedIn(lastLoggedInDate);
+        userObject.setLastLoggedIn(lastLoggedInDate);
 
-        user.setEnabled(true);
+        userObject.setEnabled(true);
 
-        int role = (user.getRole() < 0 || user.getRole() > 2) ? 1 : user.getRole();
-        user.setRole(role);
+        int role = (userObject.getRole() < 0 || userObject.getRole() > 2) ? 1 : userObject.getRole();
+        userObject.setRole(role);
 
-        userDao.save(user);
+        userDao.save(userObject);
 
         return userMapper.transformUser(userDao.getUserByUsername(user.getUsername()));
     }

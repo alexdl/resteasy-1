@@ -1,6 +1,6 @@
 package com.staleylabs.resteasy.service.proxy;
 
-import com.staleylabs.resteasy.domain.user.User;
+import com.staleylabs.resteasy.domain.user.RegisteringUser;
 import com.staleylabs.resteasy.dto.UserTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
 import com.staleylabs.resteasy.service.UserService;
@@ -39,10 +39,10 @@ public class UserServiceProxy implements UserService {
     }
 
     @Override
-    public UserTO createUser(User user) throws InsufficientInformationException {
-        if ((user != null) && (user.getUsername() != null && user.getEmailAddress() != null)
+    public UserTO createUser(RegisteringUser user) throws InsufficientInformationException {
+        if ((user != null) && (user.getUsername() != null && user.getEmail() != null)
                 && user.getFirstName() != null && user.getLastName() != null && user.getAddressLine1() != null
-                && user.getCity() != null && user.getState() != null && user.getZip() != 0) {
+                && user.getCityName() != null && user.getStateCode() != null && user.getPostalCode() != 0) {
 
             return userServiceImpl.createUser(user);
         } else {

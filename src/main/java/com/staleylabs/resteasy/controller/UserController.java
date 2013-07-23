@@ -1,6 +1,7 @@
 package com.staleylabs.resteasy.controller;
 
 import com.staleylabs.resteasy.commons.RestEasyCommons;
+import com.staleylabs.resteasy.domain.user.RegisteringUser;
 import com.staleylabs.resteasy.domain.user.User;
 import com.staleylabs.resteasy.dto.UserTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
@@ -31,11 +32,11 @@ public class UserController {
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public ModelAndView createUser() {
-        return new ModelAndView("user/createUser", "user-entity", new User());
+        return new ModelAndView("user/createUser", "registering-user-entity", new RegisteringUser());
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String userCreationForm(@ModelAttribute User user) {
+    public String userCreationForm(@ModelAttribute RegisteringUser user) {
         log.debug("Creating user from UI with username of " + user.getUsername());
 
         UserTO userTO = null;

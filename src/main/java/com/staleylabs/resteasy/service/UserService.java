@@ -1,5 +1,6 @@
 package com.staleylabs.resteasy.service;
 
+import com.staleylabs.resteasy.domain.user.RegisteringUser;
 import com.staleylabs.resteasy.domain.user.User;
 import com.staleylabs.resteasy.dto.UserTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
@@ -53,5 +54,5 @@ public interface UserService {
      *          Occurs when there is not enough information to build the user to the
      *          data source.
      */
-    UserTO createUser(User user) throws InsufficientInformationException;
+    UserTO createUser(RegisteringUser user) throws InsufficientInformationException;
 }
