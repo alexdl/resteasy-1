@@ -85,16 +85,19 @@ $(document).ready(function () {
                 componentRestrictions: {country: "us"}
             };
 
-            var service = new google.maps.places.AutocompleteService();
+            var autocomplete = new google.maps.places.Autocomplete(query, options);
+
+            return autocomplete.getPlace();
+
+            /*var service = new google.maps.places.AutocompleteService();
 
             service.getPlacePredictions({ input: query, options: options}, function (predictions, status) {
                 if (status == google.maps.places.PlacesServiceStatus.OK) {
                     process($.map(predictions, function (prediction) {
                         return prediction.description;
                     }));
-                }
-            });
-        },
+                }*/
+            },
         updater: function (item) {
             return applyToAddress(item.split(','), $(this).attr('id'));
         }

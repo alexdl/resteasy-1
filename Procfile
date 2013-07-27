@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar target/dependency/webapp-runner.jar --port $PORT target/resteasy/
+web: java $JAVA_OPTS -jar target/dependency/jetty-runner.jar --port $PORT target/resteasy.war

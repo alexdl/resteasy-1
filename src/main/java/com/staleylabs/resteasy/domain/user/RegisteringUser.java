@@ -1,7 +1,7 @@
 package com.staleylabs.resteasy.domain.user;
 
 /**
- * Created with IntelliJ IDEA.
+ * Bean that represents a user that is registering for the application.
  *
  * @author Sean M. Staley
  * @version 1.0 (7/22/13)
@@ -31,6 +31,8 @@ public class RegisteringUser {
 
     private int postalCode;
 
+    private long personalPhoneNumber;
+
     private String organizationName;
 
     private String organizationAddressLine1;
@@ -42,6 +44,8 @@ public class RegisteringUser {
     private String organizationStateCode;
 
     private int organizationPostalCode;
+
+    private long organizationPhoneNumber;
 
     public String getUsername() {
         return username;
@@ -177,5 +181,21 @@ public class RegisteringUser {
 
     public void setOrganizationPostalCode(int organizationPostalCode) {
         this.organizationPostalCode = organizationPostalCode;
+    }
+
+    public long getPersonalPhoneNumber() {
+        return personalPhoneNumber;
+    }
+
+    public void setPersonalPhoneNumber(long personalPhoneNumber) {
+        this.personalPhoneNumber = personalPhoneNumber;
+    }
+
+    public long getOrganizationPhoneNumber() {
+        return organizationPhoneNumber;
+    }
+
+    public void setOrganizationPhoneNumber(long organizationPhoneNumber) {
+        this.organizationPhoneNumber = organizationPhoneNumber;
     }
 }
