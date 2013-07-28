@@ -12,7 +12,9 @@ var VALID_PASSWORD_REGEX = /^[a-z0-9_-]{6,18}$/;
 
 var geocoder = new google.maps.Geocoder();
 
-var GOOGLE_API = "AIzaSyBQZ0_uW5KIx_PQNoicqOBuTl7KMSltebs";
+var autocomplete = new google.maps.places.AutocompleteService();
+
+var userLocation = null;
 
 // jQuery is ready to load once the page is loaded up.
 $(document).ready(function () {
@@ -56,50 +58,118 @@ $(document).ready(function () {
         });
     }
 
-    function applyToAddress(addressArray, currentNode) {
+    /**
+     * Applies personal information provided by Google Places Autocomplete to create user form.
+     *
+     * @param addressArray The prediction selected by the end user.
+     * @returns {*} Sets the personal information address fields, then returns address line 1.
+     */
+    function applyToAddress(addressArray) {
         var addressLine1 = addressArray[0].trim();
-        var city = addressArray[1].trim();
-        var state = addressArray[2].trim();
-        var returnObject = addressLine1;
 
-        if (currentNode != 'cityName') {
-            $('#cityName').val(city);
-        } else {
-            returnObject = city;
-        }
+        $('#cityName').val(addressArray[1].trim());
+        $('#stateCode').val(addressArray[2].trim());
 
-        if (currentNode != 'stateCode') {
-            $('#stateCode').val(state);
-        } else {
-            returnObject = state;
-        }
+        return addressLine1;
+    }
 
-        return returnObject;
+    /**
+     * Applies the organization information to the fields on the create user form.
+     *
+     * @param addressArray Object that contains information about a Google Maps Place.
+     * @returns {*} The name of the organization selected by the end user.
+     */
+    function applyToOrganization(addressArray) {
+        var organizationName = addressArray[0];
+        var orgAddressLine1 = addressArray[1].trim();
+        var orgCity = addressArray[2].trim();
+        var orgState = addressArray[3].trim();
+
+        $('#orgAddressLine1').val(orgAddressLine1);
+        $('#orgCityName').val(orgCity);
+        $('#orgStateCode').val(orgState);
+
+        return organizationName;
+    }
+
+    // User's location
+    if (navigator.geolocation) {
+        userLocation = navigator.geolocation.getCurrentPosition(function (position) {
+            userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude, true);
+        }, function() {
+            userLocation = new google.maps.LatLng(39.5, -98.35, true);
+        });
+    }
+    else {
+        console.log("Geolocation is not supported by this browser.");
     }
 
     // Personal Address
     $('#addressLine1').typeahead({
         source: function (query, process) {
-            var options = {
-                types: ['(cities)'],
-                componentRestrictions: {country: "us"}
-            };
+            var types = ['geocode'];
 
-            var autocomplete = new google.maps.places.Autocomplete(query, options);
-
-            return autocomplete.getPlace();
-
-            /*var service = new google.maps.places.AutocompleteService();
-
-            service.getPlacePredictions({ input: query, options: options}, function (predictions, status) {
+            autocomplete.getPlacePredictions({
+                input: query,
+                types: types,
+                location: userLocation,
+                radius: 100
+            }, function (predictions, status) {
                 if (status == google.maps.places.PlacesServiceStatus.OK) {
                     process($.map(predictions, function (prediction) {
                         return prediction.description;
-                    }));
-                }*/
-            },
+                    }))
+                }
+            })
+        },
         updater: function (item) {
-            return applyToAddress(item.split(','), $(this).attr('id'));
+            return applyToAddress(item.split(','));
+        }
+    });
+
+    // Zip Code Lookup
+    $('.postalCodeAutocomplete').typeahead({
+        source: function (query, process) {
+            var types = ['(regions)'];
+
+            autocomplete.getPlacePredictions({
+                input: query,
+                types: types,
+                location: userLocation,
+                radius: 100
+            }, function (predictions, status) {
+                if (status == google.maps.places.PlacesServiceStatus.OK) {
+                    process($.map(predictions, function (prediction) {
+                        return prediction.description;
+                    }))
+                }
+            })
+        },
+        updater: function (item) {
+            return item.replace(/[A-Za-z$-,]/g, "").trim();
+        }
+    });
+
+    // Organization Information
+    $('#organizationName').typeahead({
+        source: function (query, process) {
+            var types = ['establishment'];
+
+            autocomplete.getPlacePredictions({
+                input: query,
+                types: types,
+                location: userLocation,
+                radius: 100
+            }, function (predictions, status) {
+                if (status == google.maps.places.PlacesServiceStatus.OK) {
+                    process($.map(predictions, function (prediction) {
+                        return prediction.description;
+                    }))
+                }
+            })
+        },
+        updater: function (item) {
+            return applyToOrganization(item.split(','));
         }
     });
 

@@ -146,25 +146,25 @@
             <td colspan="2">
                 <form:input id="addressLine1" type="text" autocomplete="off" class="input-xlarge"
                             path="addressLine1" data-provide="typeahead"
-                            placeholder="1100 N Anchor Way"/>
+                            placeholder="Address Line 1"/>
             </td>
         </tr>
         <tr>
             <td></td>
             <td colspan="2">
                 <form:input id="addressLine2" type="text" autocomplete="off" class="input-xlarge"
-                            path="addressLine2" placeholder="Suite 400"/>
+                            path="addressLine2" placeholder="Address Line 2"/>
             </td>
         </tr>
         <tr>
             <td></td>
             <td colspan="2">
                 <form:input id="cityName" type="text" autocomplete="off" class="input-large"
-                            path="cityName" placeholder="New Martinsville"/>
+                            path="cityName" placeholder="City"/>
                 <form:input id="stateCode" type="text" autocomplete="off" class="input-small"
-                            path="stateCode" maxlength="2" placeholder="WV"/>
-                <form:input id="postalCode" type="text" autocomplete="off" class="input-small"
-                            path="postalCode" maxlength="5" placeholder="26155"/>
+                            path="stateCode" maxlength="2" placeholder="State"/>
+                <form:input id="postalCode" type="text" autocomplete="off" class="input-small postalCodeAutocomplete"
+                            path="postalCode" maxlength="5" placeholder="Zip Code"/>
             </td>
         </tr>
         <tr>
@@ -213,11 +213,11 @@
         <tr>
             <td></td>
             <td colspan="2">
-                <form:input id="orgCity" type="text" autocomplete="off" class="input-large"
+                <form:input id="orgCityName" type="text" autocomplete="off" class="input-large"
                             path="organizationCityName" placeholder="New Martinsville"/>
                 <form:input id="orgStateCode" type="text" autocomplete="off" class="input-small"
                             path="organizationStateCode" maxlength="2" placeholder="WV"/>
-                <form:input id="orgZipCode" type="text" autocomplete="off" class="input-small"
+                <form:input id="orgZipCode" type="text" autocomplete="off" class="input-small postalCodeAutocomplete"
                             path="organizationPostalCode" maxlength="5" placeholder="26155"/>
             </td>
         </tr>
