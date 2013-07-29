@@ -29,9 +29,9 @@ public class RegisteringUser {
 
     private String stateCode;
 
-    private int postalCode;
+    private String postalCode;
 
-    private long personalPhoneNumber;
+    private String personalPhoneNumber;
 
     private String organizationName;
 
@@ -43,9 +43,9 @@ public class RegisteringUser {
 
     private String organizationStateCode;
 
-    private int organizationPostalCode;
+    private String organizationPostalCode;
 
-    private long organizationPhoneNumber;
+    private String organizationPhoneNumber;
 
     public String getUsername() {
         return username;
@@ -127,11 +127,11 @@ public class RegisteringUser {
         this.stateCode = stateCode;
     }
 
-    public int getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
@@ -175,27 +175,27 @@ public class RegisteringUser {
         this.organizationStateCode = organizationStateCode;
     }
 
-    public int getOrganizationPostalCode() {
+    public String getOrganizationPostalCode() {
         return organizationPostalCode;
     }
 
-    public void setOrganizationPostalCode(int organizationPostalCode) {
+    public void setOrganizationPostalCode(String organizationPostalCode) {
         this.organizationPostalCode = organizationPostalCode;
     }
 
-    public long getPersonalPhoneNumber() {
+    public String getPersonalPhoneNumber() {
         return personalPhoneNumber;
     }
 
-    public void setPersonalPhoneNumber(long personalPhoneNumber) {
+    public void setPersonalPhoneNumber(String personalPhoneNumber) {
         this.personalPhoneNumber = personalPhoneNumber;
     }
 
-    public long getOrganizationPhoneNumber() {
+    public String getOrganizationPhoneNumber() {
         return organizationPhoneNumber;
     }
 
-    public void setOrganizationPhoneNumber(long organizationPhoneNumber) {
+    public void setOrganizationPhoneNumber(String organizationPhoneNumber) {
         this.organizationPhoneNumber = organizationPhoneNumber;
     }
 }

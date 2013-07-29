@@ -2,7 +2,6 @@ package com.staleylabs.resteasy.controller;
 
 import com.staleylabs.resteasy.commons.RestEasyCommons;
 import com.staleylabs.resteasy.domain.user.RegisteringUser;
-import com.staleylabs.resteasy.domain.user.User;
 import com.staleylabs.resteasy.dto.UserTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
 import com.staleylabs.resteasy.service.UserService;
@@ -72,11 +71,17 @@ public class UserController {
      * @param username The username that the user would like to have for their account.
      * @return <code>true</code> if the user has been taken, <code>false otherwise</code>.
      */
-    @RequestMapping(value = "/taken/{username}", method = RequestMethod.GET)
+    @RequestMapping(value = "/create/taken/{username}", method = RequestMethod.GET)
     @ResponseBody
     public boolean visitUserProfile(@PathVariable String username) {
         log.debug("Checking to see if user " + username + " has been taken.");
 
         return (userService.getUserTO(null, username) != null);
+    }
+
+    @RequestMapping(value = "/create/promo/{code}", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean promotionalCheck(@PathVariable String code) {
+        return (code.equals("magnolia3323"));
     }
 }

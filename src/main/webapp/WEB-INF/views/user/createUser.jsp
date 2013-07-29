@@ -16,7 +16,7 @@
 
 <div class="tabbable">
 <%-- Create User Form Start --%>
-<form:form id="createUserForm" commandName="registering-user-entity" action="/api/user/create" method="POST">
+<form:form id="createUserForm" commandName="registering-user-entity" action="/user/create" method="POST">
 
 <ul class="nav nav-tabs" id="menuTabs">
     <li class="active"><a href="#account" data-toggle="tab">Account Information</a></li>
@@ -70,8 +70,7 @@
                 </form:label>
             </td>
             <td>
-                <form:input id="passwordInput" type="password" path="password"
-                            placeholder="Example: $3Cret"/>
+                <form:input id="passwordInput" type="password" path="password" placeholder="Example: $3Cret"/>
             </td>
             <td>
                 <span id="passwordError"></span>
@@ -79,13 +78,12 @@
         </tr>
         <tr>
             <td>
-                <label class="text-left"><b class="icon-asterisk">
-                </b>Verify Password
-                </label>
+                <label class="text-left"><b class="icon-asterisk"></b>Verify Password</label>
             </td>
             <td>
                 <input id="verifyPasswordInput" type="password" placeholder="Example: $3Cret"/>
             </td>
+            <td id="passwordSame"></td>
         </tr>
     </table>
 </div>
@@ -244,7 +242,7 @@
                 <input id="promotionalCode" type="text" class="input-medium" placeholder="Enter Promo Code"/>
             </td>
             <td>
-                <button id="promotionalCodeButton" class="btn btn-mini btn-info">Check Code</button>
+                <button id="promotionalCodeButton" type="button" class="btn btn-mini btn-info">Check Code</button>
             </td>
         </tr>
     </table>

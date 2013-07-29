@@ -26,8 +26,7 @@
     <http auto-config="true" use-expressions="true" disable-url-rewriting="true">
         <intercept-url pattern="/login" access="permitAll"/>
         <intercept-url pattern="/logout" access="permitAll"/>
-        <intercept-url pattern="/user/create" access="permitAll"/>
-        <intercept-url pattern="/user/taken/**" access="permitAll"/>
+        <intercept-url pattern="/user/create/**" access="permitAll"/>
         <intercept-url pattern="/api/user/create" access="permitAll"/>
         <intercept-url pattern="/api/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>

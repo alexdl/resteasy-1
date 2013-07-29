@@ -42,7 +42,7 @@ public class UserServiceProxy implements UserService {
     public UserTO createUser(RegisteringUser user) throws InsufficientInformationException {
         if ((user != null) && (user.getUsername() != null && user.getEmail() != null)
                 && user.getFirstName() != null && user.getLastName() != null && user.getAddressLine1() != null
-                && user.getCityName() != null && user.getStateCode() != null && user.getPostalCode() != 0) {
+                && user.getCityName() != null && user.getStateCode() != null && user.getPostalCode() != null) {
 
             return userServiceImpl.createUser(user);
         } else {

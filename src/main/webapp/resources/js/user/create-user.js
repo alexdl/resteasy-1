@@ -27,10 +27,10 @@ $(document).ready(function () {
      */
     function validationTextRender(validationNode, isError) {
         if (isError) {
-            validationNode.replaceWith('<span><b class="icon-ban-circle"></b>&nbsp;Woops! Looks like your input was invalid.</span>');
+            validationNode.html('<span><b class="icon-ban-circle"></b>&nbsp;Sorry, username taken.</span>');
         }
         else {
-            validationNode.replaceWith('<span><b class="icon-ok-circle"></b>&nbsp;Looks good!</span>');
+            validationNode.html('<span><b class="icon-ok-circle"></b>&nbsp;Looks good!</span>');
         }
     }
 
@@ -41,7 +41,7 @@ $(document).ready(function () {
      * @param usernameIssuesNode DOM node where callback success or failure can be placed on the page.
      */
     function userExistCheck(username, usernameIssuesNode) {
-        var url = '/user/taken/' + username;
+        var url = '/user/create/taken/' + username;
 
         $.ajax({
             url: url,
@@ -96,7 +96,7 @@ $(document).ready(function () {
     if (navigator.geolocation) {
         userLocation = navigator.geolocation.getCurrentPosition(function (position) {
             userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude, true);
-        }, function() {
+        }, function () {
             userLocation = new google.maps.LatLng(39.5, -98.35, true);
         });
     }
@@ -193,12 +193,39 @@ $(document).ready(function () {
     });
 
     // Validates the two password boxes are the same
+    $('#verifyPasswordInput').on('keyup', function () {
+        var password1 = $('#passwordInput').val();
+        var password2 = $('#verifyPasswordInput').val();
+        var passwordCheck = $('#passwordSame');
+
+        if (password1 === password2) {
+            passwordCheck.html('<span><b class="icon-ok-circle" />&nbsp;Passwords Match!</span>');
+        } else {
+            passwordCheck.html('<span><b class="icon-ban-circle" />&nbsp;Passwords Do Not Match</span>');
+        }
+    });
 
     // Validates that the password has required characters
-    $('#passwordInput').on('keydown', function () {
+    $('#passwordInput').on('keyup', function () {
         var passwordErrorNode = $('#passwordError');
 
         passwordErrorNode.toggleClass('error icon-ban-circle', !($(this).val().match(VALID_PASSWORD_REGEX)));
         passwordErrorNode.toggleClass('success icon-ok-circle', $(this).val().match(VALID_PASSWORD_REGEX));
+    });
+
+    $('#promotionalCodeButton').on('click', function () {
+        var url = '/user/create/promo/' + $('#promotionalCode').val();
+
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            timeout: 5000,
+            type: 'GET',
+            success: function (msg) {
+                if (msg) {
+                    $('#createUserButton').removeClass('disabled');
+                }
+            }
+        });
     });
 });
