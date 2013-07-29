@@ -86,6 +86,12 @@
             <td id="passwordSame"></td>
         </tr>
     </table>
+
+    <div class="pull-right">
+        <a href="#personal">
+            <button id="onwardToPersonalButton" class="btn btn-info btn-large nav-forward-button" type="button">Next</button>
+        </a>
+    </div>
 </div>
 
     <%-- Personal Information Tabs --%>
@@ -248,7 +254,8 @@
     </table>
 
     <div class="form-actions">
-        <form:button id="createUserButton" type="submit" class="btn btn-primary disabled" disabled="disabled">Create</form:button>
+        <form:button id="createUserButton" type="submit" class="btn btn-primary disabled"
+                     disabled="disabled">Create</form:button>
         <form:button id="cancelRegistrationButton" type="reset" class="btn btn-warn">Discard Form</form:button>
     </div>
 
@@ -264,6 +271,9 @@
 </div>
 <!-- /container -->
 
+<div class="pull-right">
+    <img src="<c:url value='/resources/images/poweredbygoogle.gif'/>"/>
+</div>
 
 <c:import url="../static/jsscripts.jsp"/>
 <script type="text/javascript" src='<c:url value="/resources/js/user/create-user.js"/>'></script>

@@ -12,85 +12,103 @@ var VALID_PASSWORD_REGEX = /^[a-z0-9_-]{6,18}$/;
 
 var geocoder = new google.maps.Geocoder();
 
-var autocomplete = new google.maps.places.AutocompleteService();
+var autocompleter = new google.maps.places.AutocompleteService();
 
 var userLocation = null;
+
+/**
+ * Simple method that will replace whatever is in the given validationNode as an error or success.
+ *
+ * @param validationNode The DOM node that we interact with to place the result.
+ * @param isError <code>true</code> if an error message is requested. Otherwise, a good message will be used.
+ */
+function validationTextRender(validationNode, isError) {
+    if (isError) {
+        validationNode.html('<span><b class="icon-ban-circle"></b>&nbsp;Sorry, username taken.</span>');
+    }
+    else {
+        validationNode.html('<span><b class="icon-ok-circle"></b>&nbsp;Looks good!</span>');
+    }
+}
+
+/**
+ * Method used to check and see if a requested username exists in the application already.
+ *
+ * @param username String representation of the requested username.
+ * @param usernameIssuesNode DOM node where callback success or failure can be placed on the page.
+ */
+function userExistCheck(username, usernameIssuesNode) {
+    var url = '/user/create/taken/' + username;
+
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        timeout: 5000,
+        type: 'GET',
+        success: function (msg) {
+            if (msg) {
+                validationTextRender(usernameIssuesNode, true);
+            } else {
+                validationTextRender(usernameIssuesNode, false);
+            }
+        }
+    });
+}
+
+/**
+ * Applies personal information provided by Google Places Autocomplete to create user form.
+ *
+ * @param addressArray The prediction selected by the end user.
+ * @returns {*} Sets the personal information address fields, then returns address line 1.
+ */
+function applyToAddress(addressArray) {
+    var addressLine1 = addressArray[0].trim();
+
+    $('#cityName').val(addressArray[1].trim());
+    $('#stateCode').val(addressArray[2].trim());
+
+    return addressLine1;
+}
+
+/**
+ * Applies the organization information to the fields on the create user form.
+ *
+ * @param addressArray Object that contains information about a Google Maps Place.
+ * @returns {*} The name of the organization selected by the end user.
+ */
+function applyToOrganization(addressArray) {
+    var organizationName = addressArray[0];
+    var orgAddressLine1 = addressArray[1].trim();
+    var orgCity = addressArray[2].trim();
+    var orgState = addressArray[3].trim();
+
+    $('#orgAddressLine1').val(orgAddressLine1);
+    $('#orgCityName').val(orgCity);
+    $('#orgStateCode').val(orgState);
+
+    return organizationName;
+}
+
+function nextTab(elem) {
+    $(elem + ' li.active')
+        .next()
+        .find('a[data-toggle="tab"]')
+        .click();
+}
+
+function prevTab(elem) {
+    $(elem + ' li.active')
+        .prev()
+        .find('a[data-toggle="tab"]')
+        .click();
+}
 
 // jQuery is ready to load once the page is loaded up.
 $(document).ready(function () {
 
-    /**
-     * Simple method that will replace whatever is in the given validationNode as an error or success.
-     *
-     * @param validationNode The DOM node that we interact with to place the result.
-     * @param isError <code>true</code> if an error message is requested. Otherwise, a good message will be used.
-     */
-    function validationTextRender(validationNode, isError) {
-        if (isError) {
-            validationNode.html('<span><b class="icon-ban-circle"></b>&nbsp;Sorry, username taken.</span>');
-        }
-        else {
-            validationNode.html('<span><b class="icon-ok-circle"></b>&nbsp;Looks good!</span>');
-        }
-    }
+    $('.nav-tabs').tab();
 
-    /**
-     * Method used to check and see if a requested username exists in the application already.
-     *
-     * @param username String representation of the requested username.
-     * @param usernameIssuesNode DOM node where callback success or failure can be placed on the page.
-     */
-    function userExistCheck(username, usernameIssuesNode) {
-        var url = '/user/create/taken/' + username;
-
-        $.ajax({
-            url: url,
-            dataType: 'json',
-            timeout: 5000,
-            type: 'GET',
-            success: function (msg) {
-                if (msg) {
-                    validationTextRender(usernameIssuesNode, true);
-                } else {
-                    validationTextRender(usernameIssuesNode, false);
-                }
-            }
-        });
-    }
-
-    /**
-     * Applies personal information provided by Google Places Autocomplete to create user form.
-     *
-     * @param addressArray The prediction selected by the end user.
-     * @returns {*} Sets the personal information address fields, then returns address line 1.
-     */
-    function applyToAddress(addressArray) {
-        var addressLine1 = addressArray[0].trim();
-
-        $('#cityName').val(addressArray[1].trim());
-        $('#stateCode').val(addressArray[2].trim());
-
-        return addressLine1;
-    }
-
-    /**
-     * Applies the organization information to the fields on the create user form.
-     *
-     * @param addressArray Object that contains information about a Google Maps Place.
-     * @returns {*} The name of the organization selected by the end user.
-     */
-    function applyToOrganization(addressArray) {
-        var organizationName = addressArray[0];
-        var orgAddressLine1 = addressArray[1].trim();
-        var orgCity = addressArray[2].trim();
-        var orgState = addressArray[3].trim();
-
-        $('#orgAddressLine1').val(orgAddressLine1);
-        $('#orgCityName').val(orgCity);
-        $('#orgStateCode').val(orgState);
-
-        return organizationName;
-    }
+    $('#createUserButton').prop('disabled', true);
 
     // User's location
     if (navigator.geolocation) {
@@ -104,12 +122,16 @@ $(document).ready(function () {
         console.log("Geolocation is not supported by this browser.");
     }
 
+    // Setup navigation buttons
+    $('#onwardToPersonalButton').on('click', nextTab('#personal'));
+    $('.nav-backward-button').on('click', prevTab($(this)));
+
     // Personal Address
     $('#addressLine1').typeahead({
         source: function (query, process) {
             var types = ['geocode'];
 
-            autocomplete.getPlacePredictions({
+            autocompleter.getPlacePredictions({
                 input: query,
                 types: types,
                 location: userLocation,
@@ -132,7 +154,7 @@ $(document).ready(function () {
         source: function (query, process) {
             var types = ['(regions)'];
 
-            autocomplete.getPlacePredictions({
+            autocompleter.getPlacePredictions({
                 input: query,
                 types: types,
                 location: userLocation,
@@ -155,7 +177,7 @@ $(document).ready(function () {
         source: function (query, process) {
             var types = ['establishment'];
 
-            autocomplete.getPlacePredictions({
+            autocompleter.getPlacePredictions({
                 input: query,
                 types: types,
                 location: userLocation,
@@ -172,9 +194,6 @@ $(document).ready(function () {
             return applyToOrganization(item.split(','));
         }
     });
-
-
-    $('.nav-tabs').tab();
 
     // Checking to see if the user's username has been taken
     $('#usernameInput').on('blur', function () {
@@ -215,6 +234,7 @@ $(document).ready(function () {
 
     $('#promotionalCodeButton').on('click', function () {
         var url = '/user/create/promo/' + $('#promotionalCode').val();
+        var button = $('#createUserButton');
 
         $.ajax({
             url: url,
@@ -223,7 +243,8 @@ $(document).ready(function () {
             type: 'GET',
             success: function (msg) {
                 if (msg) {
-                    $('#createUserButton').removeClass('disabled');
+                    button.prop('disabled', false);
+                    button.removeClass('btn-disabled disabled');
                 }
             }
         });

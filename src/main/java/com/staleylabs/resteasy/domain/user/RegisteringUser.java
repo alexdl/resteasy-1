@@ -1,5 +1,7 @@
 package com.staleylabs.resteasy.domain.user;
 
+import java.io.Serializable;
+
 /**
  * Bean that represents a user that is registering for the application.
  *
@@ -7,7 +9,9 @@ package com.staleylabs.resteasy.domain.user;
  * @version 1.0 (7/22/13)
  */
 
-public class RegisteringUser {
+public class RegisteringUser implements Serializable {
+
+    private static final long serialVersionUID = -1058772158280246920L;
 
     private String username;
 
