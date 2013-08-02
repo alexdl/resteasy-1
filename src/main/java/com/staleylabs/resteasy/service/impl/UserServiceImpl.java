@@ -6,6 +6,8 @@ import com.staleylabs.resteasy.domain.user.User;
 import com.staleylabs.resteasy.dto.UserTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
 import com.staleylabs.resteasy.mapping.UserMapper;
+import com.staleylabs.resteasy.service.ContactService;
+import com.staleylabs.resteasy.service.OrganizationService;
 import com.staleylabs.resteasy.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -32,6 +34,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ContactService contactService;
+
+    @Autowired
+    private OrganizationService organizationService;
 
     @Autowired
     private UserDao userDao;
@@ -83,28 +91,41 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserTO createUser(RegisteringUser user) throws InsufficientInformationException {
+        log.info("Creating new user in the application.");
+
         User userObject = new User();
 
-        //TODO: Add user object stuff
-
         String username = StringUtils.lowerCase(user.getUsername());
-        user.setUsername(username);
+        userObject.setUsername(username);
 
         String password = generatePasswordHash(user.getPassword());
-        user.setPassword(password);
+        userObject.setPassword(password);
+
+        String email = user.getEmail();
+        userObject.setEmailAddress(email);
 
         long creationDate = new GregorianCalendar().getTimeInMillis();
         userObject.setCreationDate(creationDate);
-
-        long lastLoggedInDate = new GregorianCalendar().getTimeInMillis();
-        userObject.setLastLoggedIn(lastLoggedInDate);
+        userObject.setLastLoggedIn(creationDate);
 
         userObject.setEnabled(true);
 
         int role = (userObject.getRole() < 0 || userObject.getRole() > 2) ? 1 : userObject.getRole();
         userObject.setRole(role);
 
+        userObject.setContactInformation(contactService.generatePersonalObjectFromRegisteringUser(user));
+
+        String organizationID = organizationService.getIdFromOrganizationName(user.getOrganizationName());
+
+        if (organizationID == null) {
+            userObject.setOrganizationId(organizationService.generateOrganizationFromRegisteringUser(user).getId());
+        } else {
+            userObject.setOrganizationId(organizationID);
+        }
+
         userDao.save(userObject);
+
+        log.info("Finished creating new user " + username);
 
         return userMapper.transformUser(userDao.getUserByUsername(user.getUsername()));
     }

@@ -89,20 +89,6 @@ function applyToOrganization(addressArray) {
     return organizationName;
 }
 
-function nextTab(elem) {
-    $(elem + ' li.active')
-        .next()
-        .find('a[data-toggle="tab"]')
-        .click();
-}
-
-function prevTab(elem) {
-    $(elem + ' li.active')
-        .prev()
-        .find('a[data-toggle="tab"]')
-        .click();
-}
-
 // jQuery is ready to load once the page is loaded up.
 $(document).ready(function () {
 
@@ -121,10 +107,6 @@ $(document).ready(function () {
     else {
         console.log("Geolocation is not supported by this browser.");
     }
-
-    // Setup navigation buttons
-    $('#onwardToPersonalButton').on('click', nextTab('#personal'));
-    $('.nav-backward-button').on('click', prevTab($(this)));
 
     // Personal Address
     $('#addressLine1').typeahead({
