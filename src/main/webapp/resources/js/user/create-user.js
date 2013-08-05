@@ -7,13 +7,7 @@
 
 // Constants
 var VALID_USERNAME_REGEX = /^[a-z0-9_-]{3,16}$/;
-
-var VALID_PASSWORD_REGEX = /^[a-z0-9_-]{6,18}$/;
-
-var geocoder = new google.maps.Geocoder();
-
 var autocompleter = new google.maps.places.AutocompleteService();
-
 var userLocation = null;
 
 /**
@@ -56,6 +50,37 @@ function userExistCheck(username, usernameIssuesNode) {
 }
 
 /**
+ * Method used to check and see if a requested username exists in the application already.
+ *
+ * @param username String representation of the requested username.
+ * @param usernameIssuesNode DOM node where callback success or failure can be placed on the page.
+ */
+function passwordCheck(password, passwordErrorNode) {
+    var url = '/user/create/password/' + password;
+
+    $.ajax({
+        url: url,
+        dataType: 'json',
+        timeout: 5000,
+        type: 'POST',
+        success: function (msg) {
+            if (msg) {
+                if(!passwordErrorNode.hasClass('success')) {
+                    passwordErrorNode.removeClass();
+                    passwordErrorNode.addClass('success icon-ok-circle');
+                }
+            } else {
+                if(!passwordErrorNode.hasClass('error')) {
+                    passwordErrorNode.removeClass();
+                    passwordErrorNode.addClass('error icon-ban-circle');
+                    passwordErrorNode.attr('<span>&nbsp;Invalid Password Syntax</span>');
+                }
+            }
+        }
+    });
+}
+
+/**
  * Applies personal information provided by Google Places Autocomplete to create user form.
  *
  * @param addressArray The prediction selected by the end user.
@@ -92,7 +117,21 @@ function applyToOrganization(addressArray) {
 // jQuery is ready to load once the page is loaded up.
 $(document).ready(function () {
 
-    $('.nav-tabs').tab();
+    var tabIndex;
+
+    var tabs = $('a[data-toggle="tab"]');
+
+    tabs.on('shown',function (e) {
+        tabIndex = $(e.target).closest('li').index();
+    }).eq(0).trigger('shown');
+
+    $('._tabs_navigation').on('click', 'a', function () {
+        var index = tabIndex + ($(this).index() ? 1 : -1);
+        if (index >= 0 && index < tabs.length) {
+            tabs.eq(index).tab('show');
+        }
+        return false;
+    });
 
     $('#createUserButton').prop('disabled', true);
 
@@ -107,6 +146,14 @@ $(document).ready(function () {
     else {
         console.log("Geolocation is not supported by this browser.");
     }
+
+    $('#prevtab').on('click', function () {
+        tabs.filter('.active').prev('li').find('a[data-toggle="tab"]').tab('show');
+    });
+
+    $('#nexttab').on('click', function () {
+        tabs.filter('.active').next('li').find('a[data-toggle="tab"]').tab('show');
+    });
 
     // Personal Address
     $('#addressLine1').typeahead({
@@ -193,6 +240,15 @@ $(document).ready(function () {
         }
     });
 
+    // Validates that the password has required characters
+    $('#passwordInput').on('keyup', function () {
+        var passwordErrorNode = $('#passwordError');
+
+        if ($(this).val() !== '') {
+            passwordCheck($(this).val(), passwordErrorNode);
+        }
+    });
+
     // Validates the two password boxes are the same
     $('#verifyPasswordInput').on('keyup', function () {
         var password1 = $('#passwordInput').val();
@@ -206,14 +262,7 @@ $(document).ready(function () {
         }
     });
 
-    // Validates that the password has required characters
-    $('#passwordInput').on('keyup', function () {
-        var passwordErrorNode = $('#passwordError');
-
-        passwordErrorNode.toggleClass('error icon-ban-circle', !($(this).val().match(VALID_PASSWORD_REGEX)));
-        passwordErrorNode.toggleClass('success icon-ok-circle', $(this).val().match(VALID_PASSWORD_REGEX));
-    });
-
+    // Checks the code of the incoming user.
     $('#promotionalCodeButton').on('click', function () {
         var url = '/user/create/promo/' + $('#promotionalCode').val();
         var button = $('#createUserButton');

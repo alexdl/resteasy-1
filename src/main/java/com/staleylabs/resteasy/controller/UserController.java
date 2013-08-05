@@ -5,6 +5,7 @@ import com.staleylabs.resteasy.domain.user.RegisteringUser;
 import com.staleylabs.resteasy.dto.UserTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
 import com.staleylabs.resteasy.service.UserService;
+import com.staleylabs.resteasy.validator.registration.UserValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,9 @@ public class UserController {
 
     @Autowired
     protected UserService userService;
+
+    @Autowired
+    protected UserValidator userValidator;
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public ModelAndView createUser() {
@@ -79,9 +83,27 @@ public class UserController {
         return (userService.getUserTO(null, username) != null);
     }
 
+    /**
+     * Call that is used to check promotional codes for the application.
+     *
+     * @param code {@link String} representation of a code provided by an end user.
+     * @return <code>true</code> if the code is valid, <code>false</code> otherwise.
+     */
     @RequestMapping(value = "/create/promo/{code}", method = RequestMethod.GET)
     @ResponseBody
     public boolean promotionalCheck(@PathVariable String code) {
         return (code.equals("magnolia3323"));
+    }
+
+    /**
+     * Call that can be used to verify a given incoming user's password.
+     *
+     * @param password {@link String} representation of a requested password.
+     * @return <code>true</code> if the password is valid, <code>false</code> otherwise.
+     */
+    @RequestMapping(value = "/create/password/{password}", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean passwordCheck(@PathVariable String password) {
+        return userValidator.validatePasswordSyntax(password);
     }
 }

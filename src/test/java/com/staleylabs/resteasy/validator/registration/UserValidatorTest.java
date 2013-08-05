@@ -24,7 +24,11 @@ public class UserValidatorTest {
 
     private static final String CORRECT_EMAIL = "sean@staleylabs.com";
 
+    private static final String CORRECT_PASSWORD = "Pa$5word";
+
     private static final String INCORRECT_EMAIL = "spambot.23ti#@ijafdah";
+
+    private static final String INCORRECT_PASSWORD = "password";
 
     private static final String USERNAME_AVAILABLE = "not-taken";
 
@@ -68,5 +72,15 @@ public class UserValidatorTest {
     @Test
     public void testUsernameExists_true_when_available() throws Exception {
         assertFalse(userValidator.usernameExists(USERNAME_AVAILABLE));
+    }
+
+    @Test
+    public void testValidatePasswordSyntax_works() throws Exception {
+        assertTrue(userValidator.validatePasswordSyntax(CORRECT_PASSWORD));
+    }
+
+    @Test
+    public void testValidatePasswordSyntax_false_with_bad_password() throws Exception {
+        assertFalse(userValidator.validatePasswordSyntax(INCORRECT_PASSWORD));
     }
 }
