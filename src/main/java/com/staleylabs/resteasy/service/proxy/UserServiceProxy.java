@@ -49,4 +49,9 @@ public class UserServiceProxy implements UserService {
             throw new InsufficientInformationException("User object did not contain all of the information needed.");
         }
     }
+
+    @Override
+    public List<UserTO> getSubsetAllUsers(int pageNumber) {
+        return userServiceImpl.getSubsetAllUsers(pageNumber);
+    }
 }

@@ -15,6 +15,8 @@ import java.io.Serializable;
 @JsonSerialize
 public class UserTO implements Serializable {
 
+    private String id;
+
     private String username;
 
     private String firstName;
@@ -24,6 +26,8 @@ public class UserTO implements Serializable {
     private String lastName;
 
     private String emailAddress;
+
+    private boolean enabled;
 
     private long creationDate;
 
@@ -83,5 +87,21 @@ public class UserTO implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

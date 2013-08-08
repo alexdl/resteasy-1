@@ -55,4 +55,12 @@ public interface UserService {
      *          data source.
      */
     UserTO createUser(RegisteringUser user) throws InsufficientInformationException;
+
+    /**
+     * Obtains a list of users within a given range. This would be utilized for getting a page of user objects.
+     * @param from
+     * @param to
+     * @return
+     */
+    List<UserTO> getSubsetAllUsers(int pageNumber);
 }

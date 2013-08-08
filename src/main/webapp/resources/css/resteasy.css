@@ -73,3 +73,11 @@ body {
     width: 23% !important;
     vertical-align: middle;
 }
+
+/* Admin Page Styles */
+body.admin {
+    padding: 20px;
+    background-size: 30%;
+    background: url("/resources/images/nibbler.gif") no-repeat fixed right bottom;
+}
+

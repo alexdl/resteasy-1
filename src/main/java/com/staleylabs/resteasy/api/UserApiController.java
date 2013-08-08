@@ -27,10 +27,10 @@ import java.util.List;
 @RequestMapping(value = "/api/user")
 public class UserApiController {
 
+    private static final Logger log = Logger.getLogger(UserApiController.class.getName());
+
     @Autowired
     protected UserService userService;
-
-    private static final Logger log = Logger.getLogger(UserApiController.class.getName());
 
     /**
      * API call that will get a specific user that has been selected by the application.
@@ -62,10 +62,17 @@ public class UserApiController {
      */
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<UserTO> getCurrentUser() {
+    public List<UserTO> getAllUsers() {
         log.debug("Requesting all users!");
 
         return userService.getAllUsers();
+    }
+
+    @RequestMapping(value = "/{pageNumber}", method = RequestMethod.GET)
+    @ResponseBody
+    @ResponseStatus(org.springframework.http.HttpStatus.OK)
+    public List<UserTO> getAllUsersBySet(@PathVariable int pageNumber) {
+        return userService.getSubsetAllUsers(pageNumber);
     }
 
     /**

@@ -12,6 +12,8 @@ import com.staleylabs.resteasy.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private static final Logger log = Logger.getLogger(UserServiceImpl.class);
+
+    private static final int PAGE_SIZE = 10;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -128,6 +132,22 @@ public class UserServiceImpl implements UserService {
         log.info("Finished creating new user " + username);
 
         return userMapper.transformUser(userDao.getUserByUsername(user.getUsername()));
+    }
+
+    @Override
+    public List<UserTO> getSubsetAllUsers(int pageNumber) {
+        List<UserTO> userTOs = new ArrayList<>();
+
+        Pageable pageable = new PageRequest(pageNumber - 1, PAGE_SIZE);
+
+        List<User> users = userDao.findAll(pageable).getContent();
+
+        for (User user : users) {
+            UserTO userTO = userMapper.transformUser(user);
+            userTOs.add(userTO);
+        }
+
+        return userTOs;
     }
 
     /**
