@@ -56,13 +56,14 @@ function userExistCheck(username, usernameIssuesNode) {
  * @param usernameIssuesNode DOM node where callback success or failure can be placed on the page.
  */
 function passwordCheck(password, passwordErrorNode) {
-    var url = '/user/create/password/' + password;
+    var url = '/user/create/password';
 
     $.ajax({
         url: url,
         dataType: 'json',
         timeout: 5000,
         type: 'POST',
+        data: {"password" : password},
         success: function (msg) {
             if (msg) {
                 if(!passwordErrorNode.hasClass('success')) {

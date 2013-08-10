@@ -101,9 +101,9 @@ public class UserController {
      * @param password {@link String} representation of a requested password.
      * @return <code>true</code> if the password is valid, <code>false</code> otherwise.
      */
-    @RequestMapping(value = "/create/password/{password}", method = RequestMethod.POST)
+    @RequestMapping(value = "/create/password", method = RequestMethod.POST)
     @ResponseBody
-    public boolean passwordCheck(@PathVariable String password) {
+    public boolean passwordCheck(@RequestParam String password) {
         return userValidator.validatePasswordSyntax(password);
     }
 }
