@@ -11,7 +11,7 @@ var USER_PAGE_NUMBER = 1;
 $(document).ready(function () {
     $('#tabs').tab();
 
-    $('#userTab').on('click', function () {
+    $('#userTab').one('click', function () {
         var url = "/api/user/" + USER_PAGE_NUMBER;
 
         $.ajax({
@@ -29,7 +29,7 @@ $(document).ready(function () {
 
                         $('#userTable tr:last').after(
                             '<tr><td>' + user.id + '</td>' +
-                                '<td><a href="/admin/user/"' + username + '>' + username + '</a></td>' +
+                                '<td><a href="/admin/user/"' + username + '">' + username + '</a></td>' +
                                 '<td>' + fullName + '</td>' +
                                 '<td>' + user.emailAddress + '</td>' +
                                 '<td>' + user.enabled + '</td>' +

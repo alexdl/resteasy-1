@@ -12,7 +12,10 @@
 
 <div class="container">
 
-    <c:out value="${user}" />
+    <c:out value="${user.username}" />
+    <c:out value="${user.firstName}" />
+    <c:out value="${user.lastName}" />
+    <c:out value="${user.emailAddress}" />
 
 </div> <!-- /container -->
 

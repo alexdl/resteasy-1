@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <div id="users" class="tab-pane">
     <div class="page-header">
-        <h1>RestEasy Application Console
+        <h1>Admin Console
             <small>Users</small>
         </h1>
     </div>
@@ -11,7 +11,7 @@
         <p>User information and profile pages can be found here.</p>
     </div>
 
-    <table id="userTable" class="table table-striped">
+    <table id="userTable" class="table table-striped table-condensed">
         <tr>
             <th>ID</th>
             <th>Username</th>

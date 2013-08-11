@@ -108,6 +108,10 @@ public class UserServiceImpl implements UserService {
         String email = user.getEmail();
         userObject.setEmailAddress(email);
 
+        userObject.setFirstName(user.getFirstName());
+        userObject.setMiddleName(user.getMiddleName());
+        userObject.setLastName(user.getLastName());
+
         long creationDate = new GregorianCalendar().getTimeInMillis();
         userObject.setCreationDate(creationDate);
         userObject.setLastLoggedIn(creationDate);

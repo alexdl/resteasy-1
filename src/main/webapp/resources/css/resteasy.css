@@ -78,6 +78,6 @@ body {
 body.admin {
     padding: 20px;
     background-size: 30%;
-    background: url("/resources/images/nibbler.gif") no-repeat fixed right bottom;
+    background: url("/resources/images/nibbler.gif") no-repeat fixed right bottom #ffffff;
 }
 

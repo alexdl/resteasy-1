@@ -17,18 +17,16 @@
             <div class="well sidebar-nav">
                 <ul class="nav nav-list">
                     <li class="nav-header">Reservations</li>
-                    <li class="active"><a href="#">Link</a></li>
-                    <li><a href="#">Link</a></li>
-                    <li><a href="#">Link</a></li>
-                    <li><a href="#">Link</a></li>
+                    <li class="active"><a href="#">Schedule New</a></li>
+                    <li><a href="#">Modify Existing</a></li>
+                    <li><a href="#">View Existing</a></li>
                     <li class="nav-header">Customers</li>
-                    <li><a href="#">Link</a></li>
-                    <li><a href="#">Link</a></li>
+                    <li><a href="#">Directory</a></li>
+                    <li><a href="#">Upcoming Customers</a></li>
                     <li><a href="#">Link</a></li>
                     <li class="nav-header">Billing</li>
-                    <li><a href="#">Link</a></li>
-                    <li><a href="#">Link</a></li>
-                    <li><a href="#">Link</a></li>
+                    <li><a href="#">Room Rates</a></li>
+                    <li><a href="#">Taxes</a></li>
                 </ul>
             </div>
             <!--/.well -->
@@ -118,7 +116,7 @@
     <hr>
 
     <footer>
-        <p>&copy; StaleyLabs 2013</p>
+        <p>&copy; StaleyLabs 2013 | <a href="http://www.staleylabs.com/report">Report an Issue</a></p>
     </footer>
 
 </div>
