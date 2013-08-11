@@ -7,8 +7,30 @@
 
 // Constants
 var VALID_USERNAME_REGEX = /^[a-z0-9_-]{3,16}$/;
+
 var autocompleter = new google.maps.places.AutocompleteService();
 var userLocation = null;
+
+/*
+ * Array used to make sure the user has entered all fields needed before enabling the Save button.
+ *
+ * Array reads as follows:
+ * [username, password, name, personal address, personal zip, personal phone, org name, org address, org zip, org phone, promo code]
+ */
+var userCompleted = [false, false, false, false, false, false, false, false, false, false, false, false];
+
+var USERNAME_FIELD = 0;
+var PASSWORD_FIELD = 1;
+var NAME_FIELD = 2;
+var P_ADDRESS_FIELD = 3;
+var P_ZIP_FIELD = 4
+var P_PHONE_FIELD = 5;
+var P_EMAIL_FIELD = 6;
+var O_NAME_FIELD = 7;
+var O_ADDRESS_FIELD = 8;
+var O_ZIP_FIELD = 9;
+var O_PHONE_FIELD = 10;
+var PROMO_FIELD = 11;
 
 /**
  * Simple method that will replace whatever is in the given validationNode as an error or success.
@@ -19,9 +41,11 @@ var userLocation = null;
 function validationTextRender(validationNode, isError) {
     if (isError) {
         validationNode.html('<span><b class="icon-ban-circle"></b>&nbsp;Sorry, username taken.</span>');
+        userCompleted[USERNAME_FIELD] = false;
     }
     else {
         validationNode.html('<span><b class="icon-ok-circle"></b>&nbsp;Looks good!</span>');
+        userCompleted[USERNAME_FIELD] = true;
     }
 }
 
@@ -63,15 +87,15 @@ function passwordCheck(password, passwordErrorNode) {
         dataType: 'json',
         timeout: 5000,
         type: 'POST',
-        data: {"password" : password},
+        data: {"password": password},
         success: function (msg) {
             if (msg) {
-                if(!passwordErrorNode.hasClass('success')) {
+                if (!passwordErrorNode.hasClass('success')) {
                     passwordErrorNode.removeClass();
                     passwordErrorNode.addClass('success icon-ok-circle');
                 }
             } else {
-                if(!passwordErrorNode.hasClass('error')) {
+                if (!passwordErrorNode.hasClass('error')) {
                     passwordErrorNode.removeClass();
                     passwordErrorNode.addClass('error icon-ban-circle');
                     passwordErrorNode.attr('<span>&nbsp;Invalid Password Syntax</span>');
@@ -93,6 +117,8 @@ function applyToAddress(addressArray) {
     $('#cityName').val(addressArray[1].trim());
     $('#stateCode').val(addressArray[2].trim());
 
+    userCompleted[P_ADDRESS_FIELD] = true;
+
     return addressLine1;
 }
 
@@ -112,7 +138,41 @@ function applyToOrganization(addressArray) {
     $('#orgCityName').val(orgCity);
     $('#orgStateCode').val(orgState);
 
+    userCompleted[O_ADDRESS_FIELD] = true;
+
     return organizationName;
+}
+
+function zipCodeCheck(dom) {
+    var id = dom.attr("id");
+
+    if (id = 'personalPostalCode') {
+        if (dom.val() !== "") {
+            userCompleted[P_ZIP_FIELD] = true;
+        } else {
+            userCompleted[P_ZIP_FIELD] = false;
+        }
+    } else {
+        if (dom.val() !== "") {
+            userCompleted[O_ZIP_FIELD] = true;
+        } else {
+            userCompleted[O_ZIP_FIELD] = false;
+        }
+    }
+}
+
+/**
+ * Method used to check all fields that are required in the registering part of the application.
+ */
+function checkRequiredFields() {
+    for (var i in userCompleted) {
+        if (!userCompleted[i]) {
+            return;
+        }
+    }
+
+    $('#createUserButton').prop('disabled', false);
+    $('#createUserButton').removeClass('btn-disabled disabled');
 }
 
 // jQuery is ready to load once the page is loaded up.
@@ -202,6 +262,38 @@ $(document).ready(function () {
         }
     });
 
+    $('#personalPostalCode').on('change', function () {
+        if ($(this).val() !== "") {
+            userCompleted[P_ZIP_FIELD] = true;
+        } else {
+            userCompleted[P_ZIP_FIELD] = false;
+        }
+    });
+
+    $('#orgZipCode').on('change', function () {
+        if ($(this).val() !== "") {
+            userCompleted[O_ZIP_FIELD] = true;
+        } else {
+            userCompleted[O_ZIP_FIELD] = false;
+        }
+    });
+
+    $('#phoneNumberInput').on('change', function () {
+        if ($(this).val() !== "") {
+            userCompleted[P_PHONE_FIELD] = true;
+        } else {
+            userCompleted[P_ADDRESS_FIELD] = false;
+        }
+    });
+
+    $('#organizationNumberInput').on('change', function () {
+        if ($(this).val()) {
+            userCompleted[O_PHONE_FIELD] = true;
+        } else {
+            userCompleted[O_ADDRESS_FIELD] = false;
+        }
+    });
+
     // Organization Information
     $('#organizationName').typeahead({
         source: function (query, process) {
@@ -221,6 +313,7 @@ $(document).ready(function () {
             })
         },
         updater: function (item) {
+            userCompleted[O_NAME_FIELD] = true;
             return applyToOrganization(item.split(','));
         }
     });
@@ -241,6 +334,22 @@ $(document).ready(function () {
         }
     });
 
+    $('#emailInput').on('change', function () {
+        if ($(this).val() !== "") {
+            userCompleted[P_EMAIL_FIELD] = true;
+        } else {
+            userCompleted[P_EMAIL_FIELD] = false;
+        }
+    });
+
+    $('.requiredNameField').on('change', function () {
+        if ($('#firstNameInput').val() && $('#lastNameInput').val()) {
+            userCompleted[NAME_FIELD] = true;
+        } else {
+            userCompleted[NAME_FIELD] = false;
+        }
+    });
+
     // Validates that the password has required characters
     $('#passwordInput').on('keyup', function () {
         var passwordErrorNode = $('#passwordError');
@@ -258,15 +367,16 @@ $(document).ready(function () {
 
         if (password1 === password2) {
             passwordCheck.html('<span><b class="icon-ok-circle" />&nbsp;Passwords Match!</span>');
+            userCompleted[PASSWORD_FIELD] = true;
         } else {
             passwordCheck.html('<span><b class="icon-ban-circle" />&nbsp;Passwords Do Not Match</span>');
+            userCompleted[PASSWORD_FIELD] = false;
         }
     });
 
     // Checks the code of the incoming user.
     $('#promotionalCodeButton').on('click', function () {
         var url = '/user/create/promo/' + $('#promotionalCode').val();
-        var button = $('#createUserButton');
 
         $.ajax({
             url: url,
@@ -275,10 +385,14 @@ $(document).ready(function () {
             type: 'GET',
             success: function (msg) {
                 if (msg) {
-                    button.prop('disabled', false);
-                    button.removeClass('btn-disabled disabled');
+                    userCompleted[PROMO_FIELD] = true;
+                    checkRequiredFields();
                 }
             }
         });
     });
+
+    $('.requiredField').on('change', function () {
+        checkRequiredFields();
+    })
 });

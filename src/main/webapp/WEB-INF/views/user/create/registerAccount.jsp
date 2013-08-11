@@ -19,7 +19,8 @@
                 </form:label>
             </td>
             <td>
-                <form:input id="usernameInput" type="text" placeholder="Your Username" path="username"/>
+                <form:input id="usernameInput" cssClass="requiredField" type="text" placeholder="Your Username"
+                            path="username"/>
             </td>
             <td id="usernameExists"></td>
         </tr>
@@ -54,7 +55,7 @@
                 <label class="text-left"><b class="icon-asterisk"></b>Verify Password</label>
             </td>
             <td>
-                <input id="verifyPasswordInput" type="password" placeholder="Example: $3Cret"/>
+                <input id="verifyPasswordInput" type="password" class="requiredField" placeholder="Example: $3Cret"/>
             </td>
             <td id="passwordSame"></td>
         </tr>

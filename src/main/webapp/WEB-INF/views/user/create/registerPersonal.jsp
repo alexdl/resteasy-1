@@ -17,12 +17,12 @@
                 <form:label path="firstName"><b class="icon-asterisk"></b>Your Name</form:label>
             </td>
             <td colspan="2">
-                <form:input id="firstNameInput" path="firstName" type="text" cssClass="input-small"
-                            placeholder="First Name"/>
+                <form:input id="firstNameInput" path="firstName" type="text"
+                            cssClass="input-small requiredNameField requiredField" placeholder="First Name"/>
                 <form:input id="middleNameInput" path="middleName" type="text" cssClass="input-small"
                             placeholder="Middle Name"/>
-                <form:input id="lastNameInput" path="lastName" type="text" cssClass="input-small"
-                            placeholder="Last Name"/>
+                <form:input id="lastNameInput" path="lastName" type="text"
+                            cssClass="input-small requiredNameField requiredField" placeholder="Last Name"/>
             </td>
         </tr>
 
@@ -42,7 +42,8 @@
                 <form:label path="email"><b class="icon-asterisk"></b>Email</form:label>
             </td>
             <td>
-                <form:input id="emailInput" path="email" type="text" placeholder="sean@staleylabs.com"/>
+                <form:input id="emailInput" cssClass="requiredField" path="email" type="text"
+                            placeholder="sean@staleylabs.com"/>
             </td>
             <td>
                 <span id="emailError"></span>
@@ -53,9 +54,8 @@
                 <label><b class="icon-asterisk"></b>Address Information</label>
             </td>
             <td colspan="2">
-                <form:input id="addressLine1" type="text" autocomplete="off" class="input-xlarge"
-                            path="addressLine1" data-provide="typeahead"
-                            placeholder="Address Line 1"/>
+                <form:input id="addressLine1" type="text" autocomplete="off" class="input-xlarge requiredField"
+                            path="addressLine1" data-provide="typeahead" placeholder="Address Line 1"/>
             </td>
         </tr>
         <tr>
@@ -72,8 +72,8 @@
                             path="cityName" placeholder="City"/>
                 <form:input id="stateCode" type="text" autocomplete="off" class="input-small"
                             path="stateCode" maxlength="2" placeholder="State"/>
-                <form:input id="postalCode" type="text" autocomplete="off" class="input-small postalCodeAutocomplete"
-                            path="postalCode" maxlength="5" placeholder="Zip Code"/>
+                <form:input id="personalPostalCode" type="text" autocomplete="off" path="postalCode" maxlength="5"
+                            class="input-small postalCodeAutocomplete requiredField" placeholder="Zip Code"/>
             </td>
         </tr>
         <tr>
@@ -81,7 +81,7 @@
                 <form:label path="personalPhoneNumber" class="align-middle">Personal Phone</form:label>
             </td>
             <td>
-                <form:input id="phoneNumberInput" path="personalPhoneNumber" class="input-medium" size="15"
+                <form:input id="phoneNumberInput" path="personalPhoneNumber" class="input-medium requiredField" size="15"
                             placeholder="1 (123) 456-7890"/>
             </td>
         </tr>

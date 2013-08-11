@@ -12,7 +12,7 @@
             </td>
             <td>
                 <form:input id="organizationName" type="text" path="organizationName" placeholder="StaleyLabs"
-                            autocomplete="false"/>
+                            autocomplete="false" cssClass="requiredField"/>
             </td>
         </tr>
         <tr>
@@ -39,17 +39,18 @@
                             path="organizationCityName" placeholder="New Martinsville"/>
                 <form:input id="orgStateCode" type="text" autocomplete="off" class="input-small"
                             path="organizationStateCode" maxlength="2" placeholder="WV"/>
-                <form:input id="orgZipCode" type="text" autocomplete="off" class="input-small postalCodeAutocomplete"
-                            path="organizationPostalCode" maxlength="5" placeholder="26155"/>
+                <form:input id="orgZipCode" type="text" autocomplete="off" maxlength="5" placeholder="26155"
+                            class="input-small postalCodeAutocomplete requiredField"
+                            path="organizationPostalCode"/>
             </td>
         </tr>
         <tr>
             <td>
-                <form:label path="organizationPhoneNumber" class="align-middle">Personal Phone</form:label>
+                <form:label path="organizationPhoneNumber" class="align-middle">Organization Phone</form:label>
             </td>
             <td>
-                <form:input id="phoneNumberInput" path="organizationPhoneNumber" class="input-medium" size="15"
-                            placeholder="1 (123) 456-7890"/>
+                <form:input id="organizationNumberInput" path="organizationPhoneNumber" class="input-medium requiredField"
+                            size="15" placeholder="1 (123) 456-7890"/>
             </td>
         </tr>
     </table>
