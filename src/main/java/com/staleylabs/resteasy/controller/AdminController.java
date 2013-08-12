@@ -24,6 +24,8 @@ public class AdminController {
 
     private static final String SYSTEM_INFORMATION = "systemInformation";
 
+    private static final String SYSTEM_PROPERTIES = "systemProperties";
+
     private static final String UPTIME_INFORMATION = "uptimeInformation";
 
     @Autowired
@@ -36,6 +38,7 @@ public class AdminController {
         model.addAttribute(RestEasyCommons.PAGE_TITLE_ATTRIBUTE, "Admin Console :: RestEasy");
         model.addAttribute(SYSTEM_INFORMATION, systemService.getSystemInformation());
         model.addAttribute(UPTIME_INFORMATION, systemService.getUpTimeInformation());
+        model.addAttribute(SYSTEM_PROPERTIES, systemService.getSystemProperties());
 
         return "admin/admin";
     }

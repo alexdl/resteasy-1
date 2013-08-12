@@ -1,5 +1,8 @@
 package com.staleylabs.resteasy.service;
 
+import com.staleylabs.resteasy.domain.Global;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,4 +27,11 @@ public interface SystemService {
      * @return {@link String} in the form of "1 day, 2 hours, 34 minutes, 16 seconds"
      */
     String getUpTimeInformation();
+
+    /**
+     * Obtains all of the system properties found in the application data source.
+     *
+     * @return {@link List} of {@link Global} property objects that the application uses.
+     */
+    List<Global> getSystemProperties();
 }

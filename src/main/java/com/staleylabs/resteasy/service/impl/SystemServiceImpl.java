@@ -1,11 +1,15 @@
 package com.staleylabs.resteasy.service.impl;
 
+import com.staleylabs.resteasy.dao.RestEasyGlobalsDao;
+import com.staleylabs.resteasy.domain.Global;
 import com.staleylabs.resteasy.service.SystemService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.management.ManagementFactory;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,6 +24,9 @@ public class SystemServiceImpl implements SystemService {
     private static final Logger LOG = Logger.getLogger(SystemServiceImpl.class.getName());
 
     private static final int MB = 1024*1024;
+
+    @Autowired
+    private RestEasyGlobalsDao restEasyGlobalsDao;
 
     @Override
     public Map<String, String> getSystemInformation() {
@@ -45,5 +52,10 @@ public class SystemServiceImpl implements SystemService {
         int days = (int) ((applicationUpTime / (1000*60*60*24)));
 
         return String.format("%3d Days, %2d Hours, %2d Minutes, and %2d Seconds", days, hours, minutes, seconds);
+    }
+
+    @Override
+    public List<Global> getSystemProperties() {
+        return restEasyGlobalsDao.findAll();
     }
 }

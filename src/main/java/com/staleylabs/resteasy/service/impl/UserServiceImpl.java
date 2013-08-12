@@ -5,6 +5,7 @@ import com.staleylabs.resteasy.domain.user.RegisteringUser;
 import com.staleylabs.resteasy.domain.user.User;
 import com.staleylabs.resteasy.dto.UserTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
+import com.staleylabs.resteasy.globals.RestEasyGlobals;
 import com.staleylabs.resteasy.mapping.UserMapper;
 import com.staleylabs.resteasy.service.ContactService;
 import com.staleylabs.resteasy.service.OrganizationService;
@@ -34,8 +35,6 @@ public class UserServiceImpl implements UserService {
 
     private static final Logger log = Logger.getLogger(UserServiceImpl.class);
 
-    private static final int PAGE_SIZE = 10;
-
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -44,6 +43,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private OrganizationService organizationService;
+
+    @Autowired
+    private RestEasyGlobals restEasyGlobals;
 
     @Autowired
     private UserDao userDao;
@@ -140,6 +142,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserTO> getSubsetAllUsers(int pageNumber) {
+        int PAGE_SIZE = restEasyGlobals.getIntegerPropertyWithDefault("resteasy.admin.user.pagination", 10);
         List<UserTO> userTOs = new ArrayList<>();
 
         Pageable pageable = new PageRequest(pageNumber - 1, PAGE_SIZE);
