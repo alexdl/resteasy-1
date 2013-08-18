@@ -93,7 +93,7 @@ public final class RestEasyGlobals {
      * @param defaultValue Default value that should be displayed if not found in the database.
      * @return {@link Object} value found in database. Will use the default value if not found.
      */
-    public Object getStringPropertyWithDefault(String key, String defaultValue) {
+    public String getStringPropertyWithDefault(String key, String defaultValue) {
         Global property = restEasyGlobalsDao.findOne(key);
 
         if (property != null) {
