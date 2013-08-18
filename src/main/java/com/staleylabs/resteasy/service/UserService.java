@@ -26,7 +26,9 @@ public interface UserService {
     UserTO getUserByID(String id);
 
     /**
-     * @return
+     * Gets all users found in the application's data source.
+     *
+     * @return {@link List} of {@link UserTO} objects.
      */
     List<UserTO> getAllUsers();
 
@@ -58,9 +60,9 @@ public interface UserService {
 
     /**
      * Obtains a list of users within a given range. This would be utilized for getting a page of user objects.
-     * @param from
-     * @param to
-     * @return
+     *
+     * @param pageNumber The current page that the end user is viewing in the admin console.
+     * @return {@link List} of {@link UserTO} objects on the given {@code pageNumber}.
      */
     List<UserTO> getSubsetAllUsers(int pageNumber);
 }
