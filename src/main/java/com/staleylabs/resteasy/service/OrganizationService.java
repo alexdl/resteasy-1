@@ -2,6 +2,9 @@ package com.staleylabs.resteasy.service;
 
 import com.staleylabs.resteasy.domain.Organization;
 import com.staleylabs.resteasy.domain.user.RegisteringUser;
+import com.staleylabs.resteasy.dto.OrganizationTO;
+
+import java.util.List;
 
 /**
  * Service interface used for all things that deal with the organization bean. This would be creating, obtaining,
@@ -28,4 +31,11 @@ public interface OrganizationService {
      * @return ID of a given organization.
      */
     String getIdFromOrganizationName(String organizationName);
+
+    /**
+     * Obtains all of the organizations found in the application.
+     *
+     * @return {@link List} of {@link OrganizationTO} objects.
+     */
+    List<OrganizationTO> getAllOrganizations();
 }

@@ -3,11 +3,15 @@ package com.staleylabs.resteasy.service.impl;
 import com.staleylabs.resteasy.dao.OrganizationDao;
 import com.staleylabs.resteasy.domain.Organization;
 import com.staleylabs.resteasy.domain.user.RegisteringUser;
+import com.staleylabs.resteasy.dto.OrganizationTO;
+import com.staleylabs.resteasy.mapping.OrganizationMapper;
 import com.staleylabs.resteasy.service.ContactService;
 import com.staleylabs.resteasy.service.OrganizationService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Implementation of the OrganizationService.
@@ -27,6 +31,9 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Autowired
     private OrganizationDao organizationDao;
+
+    @Autowired
+    private OrganizationMapper organizationMapper;
 
     @Override
     public Organization generateOrganizationFromRegisteringUser(RegisteringUser user) {
@@ -59,5 +66,10 @@ public class OrganizationServiceImpl implements OrganizationService {
 
         log.debug("Found the ID of the given organization as " + organizationID);
         return organizationID;
+    }
+
+    @Override
+    public List<OrganizationTO> getAllOrganizations() {
+        return organizationMapper.transformOrganizations(organizationDao.findAll());
     }
 }
