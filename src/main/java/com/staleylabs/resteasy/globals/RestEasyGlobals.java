@@ -165,11 +165,23 @@ public final class RestEasyGlobals {
      * @param value Default value that should be displayed if not found in the database.
      * @return {@link Object} value found in database. Will use the default value if not found.
      */
-    public synchronized void setBooleanProperty(String key, boolean value) {
-        Global property = new Global();
-        property.setKey(key);
-        property.setValue(value);
+    public synchronized void setProperty(String key, String value) {
+        Global property = restEasyGlobalsDao.findOne(key);
+        if (property == null) {
 
-        restEasyGlobalsDao.save(property);
+            // Create a new one and then save to the application data source.
+            property = new Global();
+            property.setKey(key);
+            property.setValue(value);
+
+            restEasyGlobalsDao.save(property);
+        } else {
+            // Set the value of the old property.
+            property.setValue(value);
+
+            // Update the property in the data source.
+            restEasyGlobalsDao.delete(key);
+            restEasyGlobalsDao.save(property);
+        }
     }
 }

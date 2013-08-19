@@ -9,7 +9,7 @@ var USER_PAGE_NUMBER = 1;
 
 
 $(document).ready(function () {
-    $('#tabs').tab();
+    $('.tabs').tab();
 
     $('#userTab').one('click', function () {
         var url = "/api/user/" + USER_PAGE_NUMBER;
@@ -40,4 +40,24 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('#savePropertyBtn').on('click', function() {
+        var url = "/admin/applySystemProperty";
+
+        $('#propertyProgressBar').removeClass('hidden');
+
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            data: {"propertyKey": $('#propertyKey').val(),
+                   "propertyValue": $('#propertyValue').val()},
+            timeout: 5000,
+            type: 'POST',
+            success: function (msg) {
+                if (msg) {
+
+                }
+            }
+        });
+    })
 });

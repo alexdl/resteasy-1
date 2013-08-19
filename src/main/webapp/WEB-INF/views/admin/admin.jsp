@@ -11,7 +11,7 @@
 <body class="admin">
 <div class="container">
 
-    <div id="tabs" class="navbar navbar-static-top">
+    <div class="tabs navbar navbar-static-top">
         <div class="navbar-inner">
             <a href="/welcome" class="brand">RestEasy</a>
             <ul class="nav">
@@ -30,7 +30,7 @@
     <div class="tab-content">
         <c:import url='adminOverview.jsp'/>
 
-        <c:import url="adminProperties.jsp"/>
+        <c:import url="adminSystem.jsp"/>
 
         <c:import url='adminUsers.jsp'/>
     </div>
