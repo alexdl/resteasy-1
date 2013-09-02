@@ -1,5 +1,6 @@
 package com.staleylabs.resteasy.domain;
 
+import com.staleylabs.resteasy.beans.Contact;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -20,7 +21,7 @@ public class Organization {
     @Indexed(direction = IndexDirection.ASCENDING)
     private String organizationName;
 
-    private ContactInformation organizationContactInformation;
+    private Contact organizationContact;
 
     public String getId() {
         return id;
@@ -38,12 +39,12 @@ public class Organization {
         this.organizationName = organizationName;
     }
 
-    public ContactInformation getOrganizationContactInformation() {
-        return organizationContactInformation;
+    public Contact getOrganizationContact() {
+        return organizationContact;
     }
 
-    public void setOrganizationContactInformation(ContactInformation organizationContactInformation) {
-        this.organizationContactInformation = organizationContactInformation;
+    public void setOrganizationContact(Contact organizationContact) {
+        this.organizationContact = organizationContact;
     }
 
     @Override
@@ -51,7 +52,7 @@ public class Organization {
         return "Organization{" +
                 "id='" + id + '\'' +
                 ", organizationName='" + organizationName + '\'' +
-                ", organizationContactInformation=" + organizationContactInformation +
+                ", organizationContact=" + organizationContact +
                 '}';
     }
 }

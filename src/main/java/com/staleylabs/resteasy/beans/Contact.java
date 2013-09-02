@@ -1,4 +1,4 @@
-package com.staleylabs.resteasy.domain;
+package com.staleylabs.resteasy.beans;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @version 1.0 (7/30/13)
  */
 
-public class ContactInformation implements Serializable {
+public class Contact implements Serializable {
 
     private String addressLine1;
 
@@ -24,6 +24,8 @@ public class ContactInformation implements Serializable {
     private long personalNumber;
 
     private long officeNumber;
+
+    private long faxNumber;
 
     public String getAddressLine1() {
         return addressLine1;
@@ -81,16 +83,24 @@ public class ContactInformation implements Serializable {
         this.officeNumber = officeNumber;
     }
 
+    public long getFaxNumber() {
+        return faxNumber;
+    }
+
+    public void setFaxNumber(long faxNumber) {
+        this.faxNumber = faxNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ContactInformation)) {
+        if (!(o instanceof Contact)) {
             return false;
         }
 
-        ContactInformation that = (ContactInformation) o;
+        Contact that = (Contact) o;
 
         if (officeNumber != that.officeNumber) {
             return false;

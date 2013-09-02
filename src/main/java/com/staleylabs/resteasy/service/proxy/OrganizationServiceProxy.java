@@ -1,9 +1,12 @@
 package com.staleylabs.resteasy.service.proxy;
 
+import com.staleylabs.resteasy.beans.forms.RegisteringUser;
 import com.staleylabs.resteasy.domain.Organization;
-import com.staleylabs.resteasy.domain.user.RegisteringUser;
 import com.staleylabs.resteasy.dto.OrganizationTO;
+import com.staleylabs.resteasy.exception.InsufficientInformationException;
+import com.staleylabs.resteasy.security.SecureRestEasyUser;
 import com.staleylabs.resteasy.service.OrganizationService;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -47,6 +50,25 @@ public class OrganizationServiceProxy implements OrganizationService {
             if (authority.getAuthority().equals("ROLE_ADMIN")) {
                 return organizationServiceImpl.getAllOrganizations();
             }
+        }
+
+        return null;
+    }
+
+    @Override
+    public void createOrganization(OrganizationTO organization) throws InsufficientInformationException {
+        if (StringUtils.isNotBlank(organization.getOrganizationName()) && StringUtils.isNotBlank(organization.getAddressLine1())
+                && StringUtils.isNotBlank(organization.getCity()) && StringUtils.isNotBlank(organization.getStateCode())) {
+            organizationServiceImpl.createOrganization(organization);
+        } else {
+            throw new InsufficientInformationException("Not enough information to generate an organization.");
+        }
+    }
+
+    @Override
+    public OrganizationTO getUserOrganizations(SecureRestEasyUser user) {
+        if (StringUtils.isNotBlank(user.getOrganizationID())) {
+            return organizationServiceImpl.getUserOrganizations(user);
         }
 
         return null;

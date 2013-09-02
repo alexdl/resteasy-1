@@ -15,7 +15,7 @@
     <meta name="description" content="Header for RestEasy application">
     <meta name="author" content="StaleyLabs">
 
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href='<c:url value="/resources/vendor/bootstrap/css/bootstrap-combined-2.3.2.min.css"/>' rel="stylesheet">
     <link href='<c:url value="/resources/css/resteasy.css"/>' rel="stylesheet">
 
     <link rel="shortcut icon" href="<c:url value="/resources/images/Hotel_bed.png" />">

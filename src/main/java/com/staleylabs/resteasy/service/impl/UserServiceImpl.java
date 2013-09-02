@@ -1,8 +1,8 @@
 package com.staleylabs.resteasy.service.impl;
 
+import com.staleylabs.resteasy.beans.forms.RegisteringUser;
 import com.staleylabs.resteasy.dao.UserDao;
-import com.staleylabs.resteasy.domain.user.RegisteringUser;
-import com.staleylabs.resteasy.domain.user.User;
+import com.staleylabs.resteasy.domain.User;
 import com.staleylabs.resteasy.dto.UserTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
 import com.staleylabs.resteasy.globals.RestEasyGlobals;
@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
         int role = (userObject.getRole() < 0 || userObject.getRole() > 2) ? 1 : userObject.getRole();
         userObject.setRole(role);
 
-        userObject.setContactInformation(contactService.generatePersonalObjectFromRegisteringUser(user));
+        userObject.setContact(contactService.generatePersonalObjectFromRegisteringUser(user));
 
         String organizationID = organizationService.getIdFromOrganizationName(user.getOrganizationName());
 

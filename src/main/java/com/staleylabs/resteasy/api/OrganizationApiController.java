@@ -1,10 +1,14 @@
 package com.staleylabs.resteasy.api;
 
-import com.staleylabs.resteasy.dto.UserTO;
+import com.staleylabs.resteasy.dto.OrganizationTO;
+import com.staleylabs.resteasy.exception.InsufficientInformationException;
+import com.staleylabs.resteasy.security.SecureRestEasyUser;
 import com.staleylabs.resteasy.service.OrganizationService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 /**
- * API's for organization entities in the application.
+ * APIs for organization entities in the application.
  *
  * @author Sean M. Staley
  * @version 1.0 (8/18/13)
@@ -28,16 +32,44 @@ public class OrganizationApiController {
     private OrganizationService organizationService;
 
     /**
-     * API call that is used to get a response of all users found in the application.
+     * API call that is used to get a response of all organizations found in the application.
      *
-     * @return JSON list of {@link com.staleylabs.resteasy.dto.UserTO} objects.
+     * @return JSON list of {@link com.staleylabs.resteasy.dto.OrganizationTO} objects.
      */
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<UserTO> getAllOrganizations() {
+    public List<OrganizationTO> getAllOrganizations() {
         LOGGER.debug("Requesting all organizations!");
 
         return organizationService.getAllOrganizations();
     }
 
+    /**
+     * API call that is used to get a response of the organization found in the application.
+     *
+     * @return JSON list of {@link com.staleylabs.resteasy.dto.OrganizationTO} object.
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/user")
+    @ResponseBody
+    public OrganizationTO getUserOrganizations() {
+        LOGGER.debug("Requesting user's organizations!");
+
+        SecureRestEasyUser user = (SecureRestEasyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return organizationService.getUserOrganizations(user);
+    }
+
+    /**
+     * Service used to add an organization to the application.
+     *
+     * @param organization {@link OrganizationTO} entity used to generate the new organization.
+     * @throws InsufficientInformationException
+     *          Thrown if there missing information that is required to be there.
+     */
+    @RequestMapping(method = RequestMethod.PUT, value = "/add")
+    public void addOrganization(@RequestBody OrganizationTO organization) throws InsufficientInformationException {
+        LOGGER.debug("Requesting to add Organization to application.");
+
+        organizationService.createOrganization(organization);
+    }
 }

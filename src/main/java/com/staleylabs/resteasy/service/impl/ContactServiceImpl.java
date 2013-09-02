@@ -1,7 +1,7 @@
 package com.staleylabs.resteasy.service.impl;
 
-import com.staleylabs.resteasy.domain.ContactInformation;
-import com.staleylabs.resteasy.domain.user.RegisteringUser;
+import com.staleylabs.resteasy.beans.Contact;
+import com.staleylabs.resteasy.beans.forms.RegisteringUser;
 import com.staleylabs.resteasy.service.ContactService;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -21,10 +21,10 @@ public class ContactServiceImpl implements ContactService {
     private static final String SPECIAL_CHARACTER_REGEX = "[^0-9]";
 
     @Override
-    public ContactInformation generatePersonalObjectFromRegisteringUser(RegisteringUser user) {
+    public Contact generatePersonalObjectFromRegisteringUser(RegisteringUser user) {
         log.debug("Generating personal contact information object.");
 
-        ContactInformation personalInformation = new ContactInformation();
+        Contact personalInformation = new Contact();
 
         personalInformation.setAddressLine1(user.getAddressLine1());
         personalInformation.setAddressLine2(user.getAddressLine2());
@@ -38,10 +38,10 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public ContactInformation generateOrganizationObjectFromRegisteringUser(RegisteringUser user) {
+    public Contact generateOrganizationObjectFromRegisteringUser(RegisteringUser user) {
         log.debug("Generating organization's contact information object.");
 
-        ContactInformation organizationInformation = new ContactInformation();
+        Contact organizationInformation = new Contact();
 
         organizationInformation.setAddressLine1(user.getOrganizationAddressLine1());
         organizationInformation.setAddressLine2(user.getOrganizationAddressLine2());

@@ -1,7 +1,7 @@
 package com.staleylabs.resteasy.controller;
 
+import com.staleylabs.resteasy.beans.forms.RegisteringUser;
 import com.staleylabs.resteasy.commons.RestEasyCommons;
-import com.staleylabs.resteasy.domain.user.RegisteringUser;
 import com.staleylabs.resteasy.dto.UserTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
 import com.staleylabs.resteasy.service.UserService;

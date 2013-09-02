@@ -1,13 +1,13 @@
 package com.staleylabs.resteasy.security;
 
 import com.staleylabs.resteasy.dao.UserDao;
+import com.staleylabs.resteasy.domain.User;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -56,7 +56,7 @@ public class MongoDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         username = StringUtils.lowerCase(username);
-        com.staleylabs.resteasy.domain.user.User user = userDao.getUserByUsername(username);
+        User user = userDao.getUserByUsername(username);
 
         if (user == null) {
             throw new UsernameNotFoundException(username + " not found in RestEasy.");
@@ -67,8 +67,8 @@ public class MongoDetailsService implements UserDetailsService {
         boolean accountNonLocked = user.isEnabled();
         int userRole = user.getRole();
 
-        return new User(user.getUsername(), user.getPassword(), user.isEnabled(), accountNonExpired,
-                credentialsNonExpired, accountNonLocked, getAuthorities(userRole));
+        return new SecureRestEasyUser(user.getUsername(), user.getPassword(), user.isEnabled(), accountNonExpired,
+                credentialsNonExpired, accountNonLocked, getAuthorities(userRole), user.getOrganizationId());
     }
 
     /**
@@ -115,7 +115,7 @@ public class MongoDetailsService implements UserDetailsService {
         if (userDao.getUserByUsername(ADMIN_USERNAME) == null) {
             LOG.info("ADMIN did not exist, creating them now with username " + ADMIN_USERNAME);
 
-            com.staleylabs.resteasy.domain.user.User adminUser = new com.staleylabs.resteasy.domain.user.User();
+            User adminUser = new User();
 
             adminUser.setUsername(ADMIN_USERNAME);
             adminUser.setPassword(ADMIN_PASSWORD);

@@ -1,8 +1,10 @@
 package com.staleylabs.resteasy.service;
 
+import com.staleylabs.resteasy.beans.forms.RegisteringUser;
 import com.staleylabs.resteasy.domain.Organization;
-import com.staleylabs.resteasy.domain.user.RegisteringUser;
 import com.staleylabs.resteasy.dto.OrganizationTO;
+import com.staleylabs.resteasy.exception.InsufficientInformationException;
+import com.staleylabs.resteasy.security.SecureRestEasyUser;
 
 import java.util.List;
 
@@ -38,4 +40,21 @@ public interface OrganizationService {
      * @return {@link List} of {@link OrganizationTO} objects.
      */
     List<OrganizationTO> getAllOrganizations();
+
+    /**
+     * Creates an organization using a {@link OrganizationTO} object.
+     *
+     * @param organization Organization that is requested to be generated in {@link OrganizationTO} form.
+     * @throws InsufficientInformationException
+     *          If there is not enough information to build an organization object.
+     */
+    void createOrganization(OrganizationTO organization) throws InsufficientInformationException;
+
+    /**
+     * Obtains all of the organizations for a given user.
+     *
+     * @param user User that we want to get the organization information about.
+     * @return {@link List} of {@link OrganizationTO} objects that correspond to a given user.
+     */
+    OrganizationTO getUserOrganizations(SecureRestEasyUser user);
 }

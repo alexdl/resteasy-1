@@ -1,6 +1,6 @@
 package com.staleylabs.resteasy.dao;
 
-import com.staleylabs.resteasy.domain.user.User;
+import com.staleylabs.resteasy.domain.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface UserDao extends MongoRepository<User, String>{
+public interface UserDao extends MongoRepository<User, String> {
 
     /**
      * Method that can be used to get a user from the application's data source by the User ID provided to the end

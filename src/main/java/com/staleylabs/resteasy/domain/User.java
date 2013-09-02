@@ -1,12 +1,11 @@
-package com.staleylabs.resteasy.domain.user;
+package com.staleylabs.resteasy.domain;
 
-import com.staleylabs.resteasy.domain.ContactInformation;
+import com.staleylabs.resteasy.beans.Contact;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
-import java.io.Serializable;
 
 /**
  * Entity representing a single user found in the application's data source.
@@ -16,9 +15,7 @@ import java.io.Serializable;
  */
 
 @Document(collection = "user")
-public class User implements Serializable {
-
-    private static final long serialVersionUID = -2162494873842344487L;
+public class User {
 
     @Id
     private String id;
@@ -32,7 +29,7 @@ public class User implements Serializable {
 
     private String lastName;
 
-    private ContactInformation contactInformation;
+    private Contact contact;
 
     @Indexed(unique = true)
     private String emailAddress;
@@ -113,12 +110,12 @@ public class User implements Serializable {
         this.enabled = enabled;
     }
 
-    public ContactInformation getContactInformation() {
-        return contactInformation;
+    public Contact getContact() {
+        return contact;
     }
 
-    public void setContactInformation(ContactInformation address) {
-        this.contactInformation = contactInformation;
+    public void setContact(Contact address) {
+        this.contact = contact;
     }
 
     public long getLastLoggedIn() {

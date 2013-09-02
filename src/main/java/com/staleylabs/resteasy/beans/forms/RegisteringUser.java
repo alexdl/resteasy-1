@@ -1,4 +1,4 @@
-package com.staleylabs.resteasy.domain.user;
+package com.staleylabs.resteasy.beans.forms;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @version 1.0 (7/22/13)
  */
 
-public class RegisteringUser implements Serializable {
+public final class RegisteringUser implements Serializable {
 
     private static final long serialVersionUID = -1058772158280246920L;
 

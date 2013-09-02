@@ -7,17 +7,16 @@
         </h1>
     </div>
 
-    <div id="adminUserInformation">
-        <p>User information and profile pages can be found here.</p>
-    </div>
+    <div id="systemTabs" class="tabs tabbable tabs-left">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#people" data-toggle="tab">Users</a></li>
+            <li><a href="#organizations" data-toggle="tab">Organizations</a></li>
+        </ul>
+        <div class="tab-content">
 
-    <table id="userTable" class="table table-striped table-condensed">
-        <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Enabled</th>
-        </tr>
-    </table>
+            <c:import url="users/userPeople.jsp"/>
+
+            <c:import url="users/userOrganizations.jsp"/>
+        </div>
+    </div>
 </div>

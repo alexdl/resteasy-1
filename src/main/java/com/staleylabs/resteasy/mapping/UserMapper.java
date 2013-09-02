@@ -1,9 +1,10 @@
 package com.staleylabs.resteasy.mapping;
 
-import com.staleylabs.resteasy.domain.user.User;
+import com.staleylabs.resteasy.domain.User;
 import com.staleylabs.resteasy.dto.UserTO;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
 
 /**
@@ -22,6 +23,7 @@ public class UserMapper extends ModelMapper {
 
     public UserMapper() {
         modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.staleylabs.resteasy.service.proxy;
 
-import com.staleylabs.resteasy.domain.ContactInformation;
-import com.staleylabs.resteasy.domain.user.RegisteringUser;
+import com.staleylabs.resteasy.beans.Contact;
+import com.staleylabs.resteasy.beans.forms.RegisteringUser;
 import com.staleylabs.resteasy.service.ContactService;
 import com.staleylabs.resteasy.service.impl.ContactServiceImpl;
 import org.apache.log4j.Logger;
@@ -24,12 +24,12 @@ public class ContactServiceProxy implements ContactService {
     private ContactServiceImpl contactService;
 
     @Override
-    public ContactInformation generatePersonalObjectFromRegisteringUser(RegisteringUser user) {
+    public Contact generatePersonalObjectFromRegisteringUser(RegisteringUser user) {
         return contactService.generatePersonalObjectFromRegisteringUser(user);
     }
 
     @Override
-    public ContactInformation generateOrganizationObjectFromRegisteringUser(RegisteringUser user) {
+    public Contact generateOrganizationObjectFromRegisteringUser(RegisteringUser user) {
         return contactService.generateOrganizationObjectFromRegisteringUser(user);
     }
 

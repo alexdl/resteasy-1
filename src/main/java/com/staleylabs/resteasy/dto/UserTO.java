@@ -10,7 +10,7 @@ import java.io.Serializable;
  *
  * @author Sean M. Staley
  * @version 1.0 (6/2/13)
- * @see com.staleylabs.resteasy.domain.user.User
+ * @see com.staleylabs.resteasy.domain.User
  */
 @JsonSerialize
 public class UserTO implements Serializable {

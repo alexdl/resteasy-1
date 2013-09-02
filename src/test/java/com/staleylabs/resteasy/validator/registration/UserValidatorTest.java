@@ -1,7 +1,7 @@
 package com.staleylabs.resteasy.validator.registration;
 
 import com.staleylabs.resteasy.dao.UserDao;
-import com.staleylabs.resteasy.domain.user.User;
+import com.staleylabs.resteasy.domain.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

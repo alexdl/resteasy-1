@@ -5,11 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpSession;
+
 /**
- * Created with IntelliJ IDEA.
+ * Logging out of the application.
  *
  * @author Sean M. Staley
- * @version X.X (7/4/13)
+ * @version 1.0 (7/4/13)
  */
 
 @Controller
@@ -18,7 +20,9 @@ public class LogoutController {
     private static final Logger log = Logger.getLogger(LogoutController.class.getName());
 
     @RequestMapping(method = RequestMethod.GET, value = "/logout")
-    public String logoff() {
+    public String logoff(HttpSession session) {
+        session.invalidate();
+
         return "redirect:/login";
     }
 }

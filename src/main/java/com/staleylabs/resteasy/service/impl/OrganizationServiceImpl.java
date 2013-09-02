@@ -1,10 +1,12 @@
 package com.staleylabs.resteasy.service.impl;
 
+import com.staleylabs.resteasy.beans.forms.RegisteringUser;
 import com.staleylabs.resteasy.dao.OrganizationDao;
 import com.staleylabs.resteasy.domain.Organization;
-import com.staleylabs.resteasy.domain.user.RegisteringUser;
 import com.staleylabs.resteasy.dto.OrganizationTO;
+import com.staleylabs.resteasy.exception.InsufficientInformationException;
 import com.staleylabs.resteasy.mapping.OrganizationMapper;
+import com.staleylabs.resteasy.security.SecureRestEasyUser;
 import com.staleylabs.resteasy.service.ContactService;
 import com.staleylabs.resteasy.service.OrganizationService;
 import org.apache.log4j.Logger;
@@ -42,7 +44,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         Organization organization = new Organization();
 
         organization.setOrganizationName(user.getOrganizationName());
-        organization.setOrganizationContactInformation(contactService.generateOrganizationObjectFromRegisteringUser(user));
+        organization.setOrganizationContact(contactService.generateOrganizationObjectFromRegisteringUser(user));
 
         organizationDao.save(organization);
 
@@ -57,7 +59,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
         Organization organization = organizationDao.getOrganizationByOrganizationName(organizationName);
 
-        if(organization == null) {
+        if (organization == null) {
             log.info("No organization, " + organizationName + ", found in data source.");
             return null;
         }
@@ -71,5 +73,19 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public List<OrganizationTO> getAllOrganizations() {
         return organizationMapper.transformOrganizations(organizationDao.findAll());
+    }
+
+    @Override
+    public void createOrganization(OrganizationTO organization) throws InsufficientInformationException {
+        Organization persistOrganization = organizationMapper.transformOrganizationTO(organization);
+
+        organizationDao.save(persistOrganization);
+    }
+
+    @Override
+    public OrganizationTO getUserOrganizations(SecureRestEasyUser user) {
+        Organization organization = organizationDao.findOne(user.getOrganizationID());
+
+        return organizationMapper.transformOrganization(organization);
     }
 }

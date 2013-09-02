@@ -19,7 +19,7 @@ public class WelcomeController {
 
     @RequestMapping(value = "/welcome", method = RequestMethod.GET)
     public String getWelcomePage() {
-        log.debug("User is entering the application.");
+        log.trace("User is entering the application.");
 
         return "welcome/welcome";
     }

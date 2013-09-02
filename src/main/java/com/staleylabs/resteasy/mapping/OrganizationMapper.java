@@ -4,6 +4,7 @@ import com.staleylabs.resteasy.domain.Organization;
 import com.staleylabs.resteasy.dto.OrganizationTO;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
@@ -26,6 +27,7 @@ public class OrganizationMapper extends ModelMapper {
 
     public OrganizationMapper() {
         modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
     }
 
     /**
@@ -53,8 +55,8 @@ public class OrganizationMapper extends ModelMapper {
      * Returns a list of organization entities into a list of organizationTO objects. This will maintain original order
      * of the list.
      *
-     * @param all
-     * @return
+     * @param all List of organization objects.
+     * @return List of flattened organization objects that are in FIFO order.
      */
     public List<OrganizationTO> transformOrganizations(List<Organization> all) {
         List<OrganizationTO> newList = new LinkedList<>();
@@ -64,5 +66,15 @@ public class OrganizationMapper extends ModelMapper {
         }
 
         return newList;
+    }
+
+    /**
+     * Transforms an {@link OrganizationTO} object to a {@link Organization} entity to store in the database.
+     *
+     * @param organizationTO OrganizationTO that will be morphed.
+     * @return {@link Organization} form of the TO that was passed into the method.
+     */
+    public Organization transformOrganizationTO(OrganizationTO organizationTO) {
+        return modelMapper.map(organizationTO, Organization.class);
     }
 }

@@ -1,7 +1,7 @@
 package com.staleylabs.resteasy.service;
 
-import com.staleylabs.resteasy.domain.ContactInformation;
-import com.staleylabs.resteasy.domain.user.RegisteringUser;
+import com.staleylabs.resteasy.beans.Contact;
+import com.staleylabs.resteasy.beans.forms.RegisteringUser;
 
 /**
  * Service used to perform anything to the contact information of a given entity. This would include getting, setting,
@@ -14,20 +14,20 @@ import com.staleylabs.resteasy.domain.user.RegisteringUser;
 public interface ContactService {
 
     /**
-     * Generates a new {@link ContactInformation} object based on the information provided the newly registered user.
+     * Generates a new {@link com.staleylabs.resteasy.beans.Contact} object based on the information provided the newly registered user.
      *
      * @param user User object that is being registered for the first time.
      * @return An object containing all personal contact information about an incoming user.
      */
-    ContactInformation generatePersonalObjectFromRegisteringUser(RegisteringUser user);
+    Contact generatePersonalObjectFromRegisteringUser(RegisteringUser user);
 
     /**
-     * Generates a new {@link ContactInformation} object based on the information provided the newly registered user.
+     * Generates a new {@link com.staleylabs.resteasy.beans.Contact} object based on the information provided the newly registered user.
      *
      * @param user User object that is being registered for the first time.
      * @return An object containing all personal contact information about an incoming user.
      */
-    ContactInformation generateOrganizationObjectFromRegisteringUser(RegisteringUser user);
+    Contact generateOrganizationObjectFromRegisteringUser(RegisteringUser user);
 
     /**
      * Utility method used to trim any special character and spaces from a phone number inputed into the application.
