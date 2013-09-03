@@ -1,6 +1,7 @@
 package com.staleylabs.resteasy.service;
 
-import org.springframework.stereotype.Service;
+import com.staleylabs.resteasy.dto.ReservationTO;
+import com.staleylabs.resteasy.exception.InsufficientInformationException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,11 +10,12 @@ import org.springframework.stereotype.Service;
  * @version 1.0 (8/25/13)
  */
 
-@Service
 public interface ReservationService {
 
     /**
-     * Used to create a given reservation for a customer.
+     * Creates a new reservation in the system.
+     *
+     * @param reservation Details of the newly created reservation.
      */
-    void createReservation();
+    void createNewReservation(ReservationTO reservation) throws InsufficientInformationException;
 }

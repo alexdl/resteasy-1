@@ -1,27 +1,25 @@
-package com.staleylabs.resteasy.domain;
+package com.staleylabs.resteasy.dto;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Entity that represents a reservation.
+ * Reservation object that will be used by the front end of the application.
  *
  * @author Sean M. Staley
- * @version 1.0 (6/17/13)
+ * @version 1.0 (9/2/13)
  */
 
-@Document(collection = "reservation")
-public class Reservation implements Serializable {
+public class ReservationTO {
 
-    @Id
     private String reservationID;
+
+    private String organizationID;
 
     private String hotelID;
 
-    private String customerID;
+    private String roomName;
+
+    private CustomerTO customer;
 
     private Date customerCheckIn;
 
@@ -33,6 +31,8 @@ public class Reservation implements Serializable {
 
     private double taxCost;
 
+    private int customerStayCount;
+
     private String additionalNotes;
 
     public String getReservationID() {
@@ -43,6 +43,14 @@ public class Reservation implements Serializable {
         this.reservationID = reservationID;
     }
 
+    public String getOrganizationID() {
+        return organizationID;
+    }
+
+    public void setOrganizationID(String organizationID) {
+        this.organizationID = organizationID;
+    }
+
     public String getHotelID() {
         return hotelID;
     }
@@ -51,12 +59,12 @@ public class Reservation implements Serializable {
         this.hotelID = hotelID;
     }
 
-    public String getCustomerID() {
-        return customerID;
+    public String getRoomName() {
+        return roomName;
     }
 
-    public void setCustomerID(String customerID) {
-        this.customerID = customerID;
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
     public Date getCustomerCheckIn() {
@@ -99,6 +107,14 @@ public class Reservation implements Serializable {
         this.taxCost = taxCost;
     }
 
+    public int getCustomerStayCount() {
+        return customerStayCount;
+    }
+
+    public void setCustomerStayCount(int customerStayCount) {
+        this.customerStayCount = customerStayCount;
+    }
+
     public String getAdditionalNotes() {
         return additionalNotes;
     }
@@ -107,24 +123,26 @@ public class Reservation implements Serializable {
         this.additionalNotes = additionalNotes;
     }
 
+    public CustomerTO getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerTO customer) {
+        this.customer = customer;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Reservation)) {
+        if (!(o instanceof ReservationTO)) {
             return false;
         }
 
-        Reservation that = (Reservation) o;
+        ReservationTO that = (ReservationTO) o;
 
-        if (Double.compare(that.additionalCost, additionalCost) != 0) {
-            return false;
-        }
-        if (Double.compare(that.baseCost, baseCost) != 0) {
-            return false;
-        }
-        if (Double.compare(that.taxCost, taxCost) != 0) {
+        if (customerStayCount != that.customerStayCount) {
             return false;
         }
         if (!customerCheckIn.equals(that.customerCheckIn)) {
@@ -133,13 +151,19 @@ public class Reservation implements Serializable {
         if (!customerCheckOut.equals(that.customerCheckOut)) {
             return false;
         }
-        if (!customerID.equals(that.customerID)) {
+        if (!customer.equals(that.customer)) {
             return false;
         }
         if (!hotelID.equals(that.hotelID)) {
             return false;
         }
+        if (!organizationID.equals(that.organizationID)) {
+            return false;
+        }
         if (reservationID != null ? !reservationID.equals(that.reservationID) : that.reservationID != null) {
+            return false;
+        }
+        if (!roomName.equals(that.roomName)) {
             return false;
         }
 
@@ -148,19 +172,30 @@ public class Reservation implements Serializable {
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = reservationID != null ? reservationID.hashCode() : 0;
+        int result = reservationID != null ? reservationID.hashCode() : 0;
+        result = 31 * result + organizationID.hashCode();
         result = 31 * result + hotelID.hashCode();
-        result = 31 * result + customerID.hashCode();
+        result = 31 * result + roomName.hashCode();
         result = 31 * result + customerCheckIn.hashCode();
         result = 31 * result + customerCheckOut.hashCode();
-        temp = Double.doubleToLongBits(baseCost);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(additionalCost);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(taxCost);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + customerStayCount;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ReservationTO{" +
+                "reservationID='" + reservationID + '\'' +
+                ", organizationID='" + organizationID + '\'' +
+                ", hotelID='" + hotelID + '\'' +
+                ", roomName='" + roomName + '\'' +
+                ", customerEmailAddress='" + customer + '\'' +
+                ", customerCheckIn=" + customerCheckIn +
+                ", customerCheckOut=" + customerCheckOut +
+                ", baseCost=" + baseCost +
+                ", additionalCost=" + additionalCost +
+                ", taxCost=" + taxCost +
+                ", customerStayCount=" + customerStayCount +
+                '}';
     }
 }
