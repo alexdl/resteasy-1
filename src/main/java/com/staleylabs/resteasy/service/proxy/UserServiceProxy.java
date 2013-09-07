@@ -3,9 +3,12 @@ package com.staleylabs.resteasy.service.proxy;
 import com.staleylabs.resteasy.beans.forms.RegisteringUser;
 import com.staleylabs.resteasy.dto.UserTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
+import com.staleylabs.resteasy.exception.InsufficientPrivilegeException;
+import com.staleylabs.resteasy.security.SecureRestEasyUser;
 import com.staleylabs.resteasy.service.UserService;
-import com.staleylabs.resteasy.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +24,7 @@ import java.util.List;
 public class UserServiceProxy implements UserService {
 
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private UserService userServiceImpl;
 
     @Override
     public UserTO getUserByID(String id) {
@@ -29,8 +32,15 @@ public class UserServiceProxy implements UserService {
     }
 
     @Override
-    public List<UserTO> getAllUsers() {
-        return userServiceImpl.getAllUsers();
+    public List<UserTO> getAllUsers() throws InsufficientPrivilegeException {
+        SecureRestEasyUser user = (SecureRestEasyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        for (GrantedAuthority authority : user.getAuthorities()) {
+            if (authority.getAuthority().equals("ROLE_ADMIN")) {
+                return userServiceImpl.getAllUsers();
+            }
+        }
+        throw new InsufficientPrivilegeException();
     }
 
     @Override
@@ -53,5 +63,29 @@ public class UserServiceProxy implements UserService {
     @Override
     public List<UserTO> getSubsetAllUsers(int pageNumber) {
         return userServiceImpl.getSubsetAllUsers(pageNumber);
+    }
+
+    @Override
+    public void deleteUserById(String userId) throws InsufficientPrivilegeException {
+        boolean privileged = false;
+        SecureRestEasyUser user = (SecureRestEasyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        for (GrantedAuthority authority : user.getAuthorities()) {
+            if (authority.getAuthority().equals("ROLE_ADMIN")) {
+                userServiceImpl.deleteUserById(userId);
+
+                privileged = true;
+                break;
+            }
+        }
+
+        if (user.getUserId().equals(userId)) {
+            userServiceImpl.deleteUserById(userId);
+            privileged = true;
+        }
+
+        if (!privileged) {
+            throw new InsufficientPrivilegeException();
+        }
     }
 }

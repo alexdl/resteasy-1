@@ -8,12 +8,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 /**
  * APIs for organization entities in the application.
@@ -37,6 +37,7 @@ public class OrganizationApiController {
      * @return JSON list of {@link com.staleylabs.resteasy.dto.OrganizationTO} objects.
      */
     @RequestMapping(method = RequestMethod.GET)
+    @ResponseStatus(OK)
     @ResponseBody
     public List<OrganizationTO> getAllOrganizations() {
         LOGGER.debug("Requesting all organizations!");
@@ -50,6 +51,7 @@ public class OrganizationApiController {
      * @return JSON list of {@link com.staleylabs.resteasy.dto.OrganizationTO} object.
      */
     @RequestMapping(method = RequestMethod.GET, value = "/user")
+    @ResponseStatus(OK)
     @ResponseBody
     public OrganizationTO getUserOrganizations() {
         LOGGER.debug("Requesting user's organizations!");
@@ -66,7 +68,8 @@ public class OrganizationApiController {
      * @throws InsufficientInformationException
      *          Thrown if there missing information that is required to be there.
      */
-    @RequestMapping(method = RequestMethod.PUT, value = "/add")
+    @RequestMapping(method = RequestMethod.POST, value = "/add")
+    @ResponseStatus(CREATED)
     public void addOrganization(@RequestBody OrganizationTO organization) throws InsufficientInformationException {
         LOGGER.debug("Requesting to add Organization to application.");
 

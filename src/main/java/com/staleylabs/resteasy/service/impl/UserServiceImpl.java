@@ -5,6 +5,7 @@ import com.staleylabs.resteasy.dao.UserDao;
 import com.staleylabs.resteasy.domain.User;
 import com.staleylabs.resteasy.dto.UserTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
+import com.staleylabs.resteasy.exception.InsufficientPrivilegeException;
 import com.staleylabs.resteasy.globals.RestEasyGlobals;
 import com.staleylabs.resteasy.mapping.UserMapper;
 import com.staleylabs.resteasy.service.ContactService;
@@ -155,6 +156,15 @@ public class UserServiceImpl implements UserService {
         }
 
         return userTOs;
+    }
+
+    @Override
+    public void deleteUserById(String userId) throws InsufficientPrivilegeException {
+        log.debug("Removing user from the data source now.");
+
+        userDao.delete(userId);
+
+        log.debug("User is no longer in the application data source.");
     }
 
     /**

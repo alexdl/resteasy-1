@@ -4,6 +4,7 @@ import com.staleylabs.resteasy.beans.forms.RegisteringUser;
 import com.staleylabs.resteasy.domain.User;
 import com.staleylabs.resteasy.dto.UserTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
+import com.staleylabs.resteasy.exception.InsufficientPrivilegeException;
 
 import java.util.List;
 
@@ -29,8 +30,9 @@ public interface UserService {
      * Gets all users found in the application's data source.
      *
      * @return {@link List} of {@link UserTO} objects.
+     * @throws InsufficientPrivilegeException Occurs when a user is not an {@code ROLE_ADMIN} user in the application.
      */
-    List<UserTO> getAllUsers();
+    List<UserTO> getAllUsers() throws InsufficientPrivilegeException;
 
     /**
      * Obtains the UserTO object for the end user by one of the following ways:
@@ -65,4 +67,13 @@ public interface UserService {
      * @return {@link List} of {@link UserTO} objects on the given {@code pageNumber}.
      */
     List<UserTO> getSubsetAllUsers(int pageNumber);
+
+    /**
+     * Deletes a given user from the application by a user ID instead of object.
+     *
+     * @param userId {@link String} representation of a user's ID that should be removed from the application.
+     * @throws InsufficientPrivilegeException Occurs when the user is not an {@code ROLE_ADMIN} user or is not trying
+     *                                        to remove their own account from the system.
+     */
+    void deleteUserById(String userId) throws InsufficientPrivilegeException;
 }

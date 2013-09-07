@@ -27,6 +27,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class HotelServiceProxyTest {
 
+    private static final String USER_ID = "2ab3c";
+
     private static final String HOTEL_ID = "333323";
 
     private static final String USERNAME = "joe";
@@ -77,12 +79,12 @@ public class HotelServiceProxyTest {
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
-            user = new SecureRestEasyUser(USERNAME, PASSWORD, true, true, true, true, authorities, ORGANIZATION_ID);
+            user = new SecureRestEasyUser(USER_ID, USERNAME, PASSWORD, true, true, true, true, authorities, ORGANIZATION_ID);
         } else {
             final List<GrantedAuthority> authorities = new ArrayList<>(1);
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-            user = new SecureRestEasyUser(USERNAME, PASSWORD, true, true, true, true, authorities, ORGANIZATION_ID);
+            user = new SecureRestEasyUser(USER_ID, USERNAME, PASSWORD, true, true, true, true, authorities, ORGANIZATION_ID);
         }
 
         return user;

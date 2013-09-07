@@ -67,7 +67,7 @@ public class MongoDetailsService implements UserDetailsService {
         boolean accountNonLocked = user.isEnabled();
         int userRole = user.getRole();
 
-        return new SecureRestEasyUser(user.getUsername(), user.getPassword(), user.isEnabled(), accountNonExpired,
+        return new SecureRestEasyUser(user.getId(), user.getUsername(), user.getPassword(), user.isEnabled(), accountNonExpired,
                 credentialsNonExpired, accountNonLocked, getAuthorities(userRole), user.getOrganizationId());
     }
 

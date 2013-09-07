@@ -4,8 +4,10 @@ import com.staleylabs.resteasy.beans.forms.RegisteringUser;
 import com.staleylabs.resteasy.domain.User;
 import com.staleylabs.resteasy.dto.UserTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
+import com.staleylabs.resteasy.exception.InsufficientPrivilegeException;
 import com.staleylabs.resteasy.service.UserService;
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +15,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * Spring MVC Controller that can be used to get information on a particular user from the application or to obtain
@@ -39,6 +45,7 @@ public class UserApiController {
      * @return {@link UserTO} object that represents the user with the ID passed into the method.
      */
     @RequestMapping(value = "/id/{userId}", method = RequestMethod.GET)
+    @ResponseStatus(OK)
     @ResponseBody
     public UserTO getUserByUserId(@PathVariable String userId) {
         return userService.getUserByID(userId);
@@ -50,6 +57,7 @@ public class UserApiController {
      * @return {@link UserTO} object that represents the user with the ID passed into the method.
      */
     @RequestMapping(value = "/username/{username}", method = RequestMethod.GET)
+    @ResponseStatus(OK)
     @ResponseBody
     public UserTO getUserByUsername(@PathVariable String username) {
         return userService.getUserTO(null, username);
@@ -61,16 +69,23 @@ public class UserApiController {
      * @return JSON list of {@link UserTO} objects.
      */
     @RequestMapping(method = RequestMethod.GET)
+    @ResponseStatus(OK)
     @ResponseBody
-    public List<UserTO> getAllUsers() {
+    public List getAllUsers(HttpServletResponse response) throws IOException {
         log.debug("Requesting all users!");
 
-        return userService.getAllUsers();
+        try {
+            return userService.getAllUsers();
+        } catch (InsufficientPrivilegeException e) {
+            response.sendError(HttpStatus.SC_FORBIDDEN, Arrays.toString(e.getStackTrace()));
+        }
+
+        return Collections.EMPTY_LIST;
     }
 
     @RequestMapping(value = "/{pageNumber}", method = RequestMethod.GET)
     @ResponseBody
-    @ResponseStatus(org.springframework.http.HttpStatus.OK)
+    @ResponseStatus(OK)
     public List<UserTO> getAllUsersBySet(@PathVariable int pageNumber) {
         return userService.getSubsetAllUsers(pageNumber);
     }
@@ -96,8 +111,9 @@ public class UserApiController {
      *         if the process did work correctly.
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseStatus(CREATED)
     @ResponseBody
-    public UserTO createUser(@RequestBody RegisteringUser user, HttpServletResponse response) {
+    public UserTO createUser(@RequestBody RegisteringUser user, HttpServletResponse response) throws IOException {
         UserTO userTO = null;
 
         try {
@@ -105,14 +121,27 @@ public class UserApiController {
         } catch (InsufficientInformationException e) {
             log.info(e);
 
-            try {
-                response.sendError(HttpStatus.SC_BAD_REQUEST, "Incoming parameters were missing stuff.");
-            } catch (IOException e1) {
-                log.error(e1);
-            }
+            response.sendError(HttpStatus.SC_BAD_REQUEST, e.getMessage());
         }
-        response.setStatus(HttpStatus.SC_OK);
 
         return userTO;
+    }
+
+    @RequestMapping(value = "/delete/{userId}", method = RequestMethod.DELETE, produces = "application/json")
+    @ResponseStatus(NO_CONTENT)
+    @ResponseBody
+    public void removeUser(@PathVariable String userId, HttpServletResponse response) throws IOException {
+        log.info("Removing user with ID " + userId + " from application...");
+
+        if (StringUtils.isBlank(userId)) {
+            response.sendError(HttpStatus.SC_BAD_REQUEST, "ID for user passed was empty.");
+        } else {
+
+            try {
+                userService.deleteUserById(userId);
+            } catch (InsufficientPrivilegeException e) {
+                response.sendError(HttpStatus.SC_FORBIDDEN, e.getMessage());
+            }
+        }
     }
 }

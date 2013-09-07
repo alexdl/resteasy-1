@@ -22,6 +22,8 @@ public class SecureRestEasyUser implements UserDetails {
 
     private final String username;
 
+    private final String userId;
+
     private final Set<GrantedAuthority> authorities;
 
     private final boolean accountNonExpired;
@@ -39,8 +41,8 @@ public class SecureRestEasyUser implements UserDetails {
     /**
      * Calls the more complex constructor with all boolean arguments set to {@code true}.
      */
-    public SecureRestEasyUser(String username, String password, Collection<? extends GrantedAuthority> authorities, String organizationID) {
-        this(username, password, true, true, true, true, authorities, organizationID);
+    public SecureRestEasyUser(String userId, String username, String password, Collection<? extends GrantedAuthority> authorities, String organizationID) {
+        this(userId, username, password, true, true, true, true, authorities, organizationID);
     }
 
     /**
@@ -65,13 +67,14 @@ public class SecureRestEasyUser implements UserDetails {
      *                                  either as a parameter or as an element in the
      *                                  <code>GrantedAuthority</code> collection
      */
-    public SecureRestEasyUser(String username, String password, boolean enabled, boolean accountNonExpired,
+    public SecureRestEasyUser(String userId, String username, String password, boolean enabled, boolean accountNonExpired,
                               boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities, String organizationID) {
 
         if (((username == null) || "".equals(username)) || (password == null)) {
             throw new IllegalArgumentException("Cannot pass null or empty values to constructor");
         }
 
+        this.userId = userId;
         this.username = username;
         this.password = password;
         this.enabled = enabled;
@@ -90,6 +93,10 @@ public class SecureRestEasyUser implements UserDetails {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getUsername() {
