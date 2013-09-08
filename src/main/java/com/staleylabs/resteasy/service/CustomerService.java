@@ -3,6 +3,9 @@ package com.staleylabs.resteasy.service;
 import com.staleylabs.resteasy.domain.Customer;
 import com.staleylabs.resteasy.dto.CustomerTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
+import com.staleylabs.resteasy.exception.InsufficientPrivilegeException;
+
+import java.util.Collection;
 
 /**
  * Service layer class that is to be used for all things regarding a customer DTO or entity object. This includes CRUD
@@ -31,4 +34,24 @@ public interface CustomerService {
      */
     CustomerTO getExistingCustomer(String customerID);
 
+    /**
+     * Creates a new customer using the TO object instead of the entity. Follows path of {@link #createNewCustomer(com.staleylabs.resteasy.domain.Customer)}.
+     *
+     * @param customerTO User that will be created in the application barring any missing data or permission issues.
+     */
+    void createNewCustomer(CustomerTO customerTO) throws InsufficientInformationException;
+
+    /**
+     * Used to obtain all of the users in the application's data source.
+     *
+     * @return {@link Collection} of {@link CustomerTO} objects.
+     */
+    Collection<CustomerTO> getAllCustomers() throws InsufficientPrivilegeException;
+
+    /**
+     * Removes a given customer that corresponds to the parameter ID from the application and application data source.
+     *
+     * @param customerID {@link String} ID of the customer that is wished to be removed from the application data source.
+     */
+    void removeCustomer(String customerID);
 }

@@ -4,11 +4,15 @@ import com.staleylabs.resteasy.dao.CustomerDao;
 import com.staleylabs.resteasy.domain.Customer;
 import com.staleylabs.resteasy.dto.CustomerTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
+import com.staleylabs.resteasy.exception.InsufficientPrivilegeException;
 import com.staleylabs.resteasy.mapping.CustomerMapper;
 import com.staleylabs.resteasy.service.CustomerService;
+import org.apache.log4j.LogMF;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
 
 /**
  * Implementation of the {@link CustomerService}.
@@ -32,8 +36,7 @@ public class CustomerServiceImpl implements CustomerService {
     public String createNewCustomer(Customer customer) throws InsufficientInformationException {
         customer = customerDao.save(customer);
 
-        log.info("Added new customer to application " + customer.toString());
-
+        LogMF.info(log, "Customer with ID {0} created successfully.", customer.getCustomerID());
         return customer.getCustomerID();
     }
 
@@ -42,5 +45,23 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerDao.findOne(customerID);
 
         return customerMapper.transformCustomer(customer);
+    }
+
+    @Override
+    public void createNewCustomer(CustomerTO customerTO) throws InsufficientInformationException {
+        log.info("Creating new user from TO object.");
+
+        // Transform and persist the new user.
+        createNewCustomer(customerMapper.transformCustomer(customerTO));
+    }
+
+    @Override
+    public Collection<CustomerTO> getAllCustomers() throws InsufficientPrivilegeException {
+        return customerMapper.transformCustomers(customerDao.findAll());
+    }
+
+    @Override
+    public void removeCustomer(String customerID) {
+        // TODO: Remove customer from the application.
     }
 }
