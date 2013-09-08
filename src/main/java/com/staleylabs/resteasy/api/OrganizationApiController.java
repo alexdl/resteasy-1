@@ -2,6 +2,7 @@ package com.staleylabs.resteasy.api;
 
 import com.staleylabs.resteasy.dto.OrganizationTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
+import com.staleylabs.resteasy.exception.InsufficientPrivilegeException;
 import com.staleylabs.resteasy.security.SecureRestEasyUser;
 import com.staleylabs.resteasy.service.OrganizationService;
 import org.apache.log4j.Logger;
@@ -10,10 +11,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * APIs for organization entities in the application.
@@ -23,7 +25,7 @@ import static org.springframework.http.HttpStatus.OK;
  */
 
 @Controller
-@RequestMapping(value = "/api/organizations")
+@RequestMapping(value = "/api/organization")
 public class OrganizationApiController {
 
     private static final Logger LOGGER = Logger.getLogger(OrganizationApiController.class.getName());
@@ -74,5 +76,24 @@ public class OrganizationApiController {
         LOGGER.debug("Requesting to add Organization to application.");
 
         organizationService.createOrganization(organization);
+    }
+
+    /**
+     * Service used to delete a given organization from the application.
+     *
+     * @param organizationId {@link String} form of the ID from the organization that will be removed.
+     * @param response       {@link HttpServletResponse} object that will be used to return to the requester.
+     * @throws IOException Occurs if there is an issue with sending the error with the response.
+     */
+    @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{organizationId}")
+    @ResponseStatus(NO_CONTENT)
+    public void removeOrganization(@PathVariable String organizationId, HttpServletResponse response) throws IOException {
+        LOGGER.debug("API call to remove " + organizationId + " received.");
+
+        try {
+            organizationService.deleteOrganization(organizationId);
+        } catch (InsufficientPrivilegeException e) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Not allowed to perform requested operation.");
+        }
     }
 }

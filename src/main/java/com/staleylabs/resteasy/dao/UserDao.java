@@ -4,6 +4,8 @@ import com.staleylabs.resteasy.domain.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Data Access Object Interface that can be used to obtain {@link User} objects from a given source of data.
  *
@@ -30,4 +32,13 @@ public interface UserDao extends MongoRepository<User, String> {
      * @return {@link User} object representing the end user.
      */
     User getUserByUsername(String username);
+
+    /**
+     * Gets a collection of users associated with a particular organization from the application data source by the
+     * organization ID.
+     *
+     * @param organizationId {@link String} ID of a given organization.
+     * @return Collection of user objects that are associated with a given organization ID.
+     */
+    List<User> findByOrganizationId(String organizationId);
 }

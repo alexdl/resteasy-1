@@ -27,6 +27,8 @@ public class UserTO implements Serializable {
 
     private String emailAddress;
 
+    private String organizationId;
+
     private boolean enabled;
 
     private long creationDate;
@@ -103,5 +105,13 @@ public class UserTO implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(String organizationId) {
+        this.organizationId = organizationId;
     }
 }

@@ -88,4 +88,9 @@ public class UserServiceProxy implements UserService {
             throw new InsufficientPrivilegeException();
         }
     }
+
+    @Override
+    public UserTO updateUserOrganizations(String userId, String organizationID) {
+        return userServiceImpl.updateUserOrganizations(userId, organizationID);
+    }
 }

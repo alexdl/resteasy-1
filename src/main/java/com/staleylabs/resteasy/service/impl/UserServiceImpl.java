@@ -16,6 +16,10 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +45,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ContactService contactService;
+
+    @Autowired
+    private MongoOperations mongoOperations;
 
     @Autowired
     private OrganizationService organizationService;
@@ -165,6 +172,22 @@ public class UserServiceImpl implements UserService {
         userDao.delete(userId);
 
         log.debug("User is no longer in the application data source.");
+    }
+
+    @Override
+    public UserTO updateUserOrganizations(String userId, String organizationID) {
+
+        Update update = new Update();
+
+        if (StringUtils.isBlank(organizationID)) {
+            update.unset("organizationId");
+        } else {
+            update.set("organizationId", organizationID);
+        }
+
+        mongoOperations.updateFirst(new Query().addCriteria(Criteria.where("id").is(userId)), update, User.class);
+
+        return userMapper.transformUser(userDao.findOne(userId));
     }
 
     /**

@@ -2,13 +2,17 @@ package com.staleylabs.resteasy.service.impl;
 
 import com.staleylabs.resteasy.beans.forms.RegisteringUser;
 import com.staleylabs.resteasy.dao.OrganizationDao;
+import com.staleylabs.resteasy.dao.UserDao;
 import com.staleylabs.resteasy.domain.Organization;
+import com.staleylabs.resteasy.domain.User;
 import com.staleylabs.resteasy.dto.OrganizationTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
+import com.staleylabs.resteasy.exception.InsufficientPrivilegeException;
 import com.staleylabs.resteasy.mapping.OrganizationMapper;
 import com.staleylabs.resteasy.security.SecureRestEasyUser;
 import com.staleylabs.resteasy.service.ContactService;
 import com.staleylabs.resteasy.service.OrganizationService;
+import com.staleylabs.resteasy.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +40,12 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Autowired
     private OrganizationMapper organizationMapper;
+
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private UserService userServiceImpl;
 
     @Override
     public Organization generateOrganizationFromRegisteringUser(RegisteringUser user) {
@@ -87,5 +97,22 @@ public class OrganizationServiceImpl implements OrganizationService {
         Organization organization = organizationDao.findOne(user.getOrganizationID());
 
         return organizationMapper.transformOrganization(organization);
+    }
+
+    @Override
+    public void deleteOrganization(String organizationId) throws InsufficientPrivilegeException {
+        log.info("Removing organization " + organizationId + " from the application.");
+
+        // First remove all of the organization's associated users.
+        List<User> users = userDao.findByOrganizationId(organizationId);
+
+        for (User user : users) {
+            userServiceImpl.updateUserOrganizations(user.getId(), null);
+        }
+
+        // Finally, delete the organization from the application.
+        organizationDao.delete(organizationId);
+
+        log.info("Removed the organization from the application.");
     }
 }

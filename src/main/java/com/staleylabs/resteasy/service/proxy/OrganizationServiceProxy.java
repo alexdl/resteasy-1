@@ -4,6 +4,7 @@ import com.staleylabs.resteasy.beans.forms.RegisteringUser;
 import com.staleylabs.resteasy.domain.Organization;
 import com.staleylabs.resteasy.dto.OrganizationTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
+import com.staleylabs.resteasy.exception.InsufficientPrivilegeException;
 import com.staleylabs.resteasy.security.SecureRestEasyUser;
 import com.staleylabs.resteasy.service.OrganizationService;
 import org.apache.commons.lang.StringUtils;
@@ -72,5 +73,29 @@ public class OrganizationServiceProxy implements OrganizationService {
         }
 
         return null;
+    }
+
+    @Override
+    public void deleteOrganization(String organizationId) throws InsufficientPrivilegeException {
+        boolean privileged = false;
+        SecureRestEasyUser user = (SecureRestEasyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        for (GrantedAuthority authority : user.getAuthorities()) {
+            if (authority.getAuthority().equals("ROLE_ADMIN")) {
+                organizationServiceImpl.deleteOrganization(organizationId);
+
+                privileged = true;
+                break;
+            }
+        }
+
+        if (StringUtils.isNotBlank(user.getOrganizationID()) && user.getOrganizationID().equals(organizationId)) {
+            organizationServiceImpl.deleteOrganization(organizationId);
+            privileged = true;
+        }
+
+        if (!privileged) {
+            throw new InsufficientPrivilegeException();
+        }
     }
 }

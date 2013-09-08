@@ -76,4 +76,13 @@ public interface UserService {
      *                                        to remove their own account from the system.
      */
     void deleteUserById(String userId) throws InsufficientPrivilegeException;
+
+    /**
+     * Updates a given user based on {@code userID} with a list of new {@code organizationIDs}.
+     *
+     * @param userId          {@link String} representation of a user's ID.
+     * @param organizationIDs {@link String} IDs for all the organizations associated with a user. The ID can be {@code null}.
+     * @return The new user object for a given user.
+     */
+    UserTO updateUserOrganizations(String userId, String organizationID);
 }

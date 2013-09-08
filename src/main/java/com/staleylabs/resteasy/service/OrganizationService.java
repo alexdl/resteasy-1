@@ -4,6 +4,7 @@ import com.staleylabs.resteasy.beans.forms.RegisteringUser;
 import com.staleylabs.resteasy.domain.Organization;
 import com.staleylabs.resteasy.dto.OrganizationTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
+import com.staleylabs.resteasy.exception.InsufficientPrivilegeException;
 import com.staleylabs.resteasy.security.SecureRestEasyUser;
 
 import java.util.List;
@@ -57,4 +58,12 @@ public interface OrganizationService {
      * @return {@link List} of {@link OrganizationTO} objects that correspond to a given user.
      */
     OrganizationTO getUserOrganizations(SecureRestEasyUser user);
+
+    /**
+     * Removes an organization from the application, as well as removes the ID from any users that have an association
+     * with the given organization ID.
+     *
+     * @param organizationId {@link String} ID of a given organization.
+     */
+    void deleteOrganization(String organizationId) throws InsufficientPrivilegeException;
 }
