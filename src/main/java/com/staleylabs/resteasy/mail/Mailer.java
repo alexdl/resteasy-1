@@ -1,8 +1,11 @@
 package com.staleylabs.resteasy.mail;
 
+import com.staleylabs.resteasy.beans.EmailMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
+import javax.annotation.PostConstruct;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -22,42 +25,55 @@ public class Mailer {
 
     private static final String SMTP_HOST_NAME = "smtp.sendgrid.net";
 
+    private final Properties properties = new Properties();
+
     @Autowired
     private SMTPAuthenticator smtpAuthenticator;
 
-    public void test() throws Exception {
-        Properties props = new Properties();
-        props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.host", SMTP_HOST_NAME);
-        props.put("mail.smtp.port", 587);
-        props.put("mail.smtp.auth", "true");
+    @PostConstruct
+    private void applyMailProperties() {
+        properties.put("mail.transport.protocol", "smtp");
+        properties.put("mail.smtp.host", SMTP_HOST_NAME);
+        properties.put("mail.smtp.port", 587);
+        properties.put("mail.smtp.auth", "true");
+    }
 
-        Session mailSession = Session.getDefaultInstance(props, smtpAuthenticator);
+    // uncomment for debugging infos to stdout
+    // mailSession.setDebug(true);
 
-        // uncomment for debugging infos to stdout
-        // mailSession.setDebug(true);
+    /**
+     * Provides the ability to send an email from the application given a {@link EmailMessage} object.
+     *
+     * @param message {@link EmailMessage} object that contains the basic information of the email to be sent.
+     * @return {@code true} if the email was sent successfully.
+     * @throws MessagingException
+     */
+    public boolean sendMessage(EmailMessage message) throws MessagingException {
+        Session mailSession = Session.getDefaultInstance(properties, smtpAuthenticator);
         Transport transport = mailSession.getTransport();
 
-        MimeMessage message = new MimeMessage(mailSession);
-
+        MimeMessage mimeMessage = new MimeMessage(mailSession);
         Multipart multipart = new MimeMultipart("alternative");
 
-        BodyPart part1 = new MimeBodyPart();
-        part1.setText("This is multipart mail and u read part1......");
+        BodyPart bodyPart = new MimeBodyPart();
+        bodyPart.setText(message.getMessageBody());
 
-        BodyPart part2 = new MimeBodyPart();
-        part2.setContent("<b>This is multipart mail and u read part2......</b>", "text/html");
+        multipart.addBodyPart(bodyPart);
 
-        multipart.addBodyPart(part1);
-        multipart.addBodyPart(part2);
+        mimeMessage.setContent(multipart);
+        mimeMessage.setFrom(new InternetAddress(message.getSender()));
+        mimeMessage.addRecipients(Message.RecipientType.TO, String.valueOf(message.getRecipients()));
 
-        message.setContent(multipart);
-        message.setFrom(new InternetAddress("me@myhost.com"));
-        message.setSubject("This is the subject");
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress("someone@somewhere.com"));
+        if (!CollectionUtils.isEmpty(message.getCcRecipients())) {
+            mimeMessage.addRecipients(Message.RecipientType.CC, String.valueOf(message.getCcRecipients()));
+        }
+
+        mimeMessage.setSubject(message.getSubject());
 
         transport.connect();
-        transport.sendMessage(message, message.getRecipients(Message.RecipientType.TO));
+        transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
         transport.close();
+
+        return true;
     }
 }
