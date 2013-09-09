@@ -10,7 +10,6 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.PostConstruct;
 import javax.mail.*;
 import javax.mail.internet.*;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -28,6 +27,8 @@ public class Mailer {
 
     private static final String SMTP_HOST_NAME = "smtp.sendgrid.net";
 
+    private static boolean DEBUG_ENABLED;
+
     private final Properties properties = new Properties();
 
     @Autowired
@@ -40,9 +41,6 @@ public class Mailer {
         properties.put("mail.smtp.port", 587);
         properties.put("mail.smtp.auth", "true");
     }
-
-    // uncomment for debugging infos to stdout
-    // mailSession.setDebug(true);
 
     /**
      * Provides the ability to send an email from the application given a {@link EmailMessage} object.
@@ -75,7 +73,10 @@ public class Mailer {
 
         mimeMessage.setSubject(message.getSubject());
 
-        log.info("Sending email to " + Arrays.toString(mimeMessage.getAllRecipients()));
+        // Mail debugging
+        if (mailSession.getDebug() != getDebugMode()) {
+            mailSession.setDebug(getDebugMode());
+        }
 
         transport.connect();
         transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
@@ -100,5 +101,23 @@ public class Mailer {
         LogMF.debug(log, "Translated {0} addresses into Address objects.", position);
 
         return result;
+    }
+
+    /**
+     * Turns on the debugging of mail, which can cause the logs to be way too large.
+     *
+     * @param debugOn {@code true} if mail debugging should be turned on.
+     */
+    public synchronized void setDebugMode(boolean debugOn) {
+        DEBUG_ENABLED = debugOn;
+    }
+
+    /**
+     * Informs if mail debugging is turned on or off in the application.
+     *
+     * @return {@code true} if debug mode is active.
+     */
+    public boolean getDebugMode() {
+        return DEBUG_ENABLED;
     }
 }

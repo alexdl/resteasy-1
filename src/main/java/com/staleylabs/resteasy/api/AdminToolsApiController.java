@@ -5,10 +5,7 @@ import com.staleylabs.resteasy.mail.Mailer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +25,7 @@ public class AdminToolsApiController {
     @Autowired
     private Mailer mailman;
 
-    @RequestMapping(value = "/test/mail", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/mail/test", method = RequestMethod.POST, consumes = "application/json")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void testMailConnection(@RequestBody EmailMessage message, HttpServletResponse response) throws IOException {
         message.setSubject("RestEasy Test Email");
@@ -40,5 +37,11 @@ public class AdminToolsApiController {
         } catch (MessagingException e) {
             response.sendError(500, "There was an error when trying to send message.");
         }
+    }
+
+    @RequestMapping(value = "/mail/debug/{debugMode}", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void testMailConnection(@PathVariable boolean debugMode) throws IOException {
+        mailman.setDebugMode(debugMode);
     }
 }

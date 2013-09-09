@@ -71,4 +71,13 @@ public class EmailMessage {
     public void setContentType(Multipart contentType) {
         this.contentType = contentType;
     }
+
+    @Override
+    public String toString() {
+        return "EmailMessage{" +
+                "sender='" + sender + '\'' +
+                ", recipients=" + recipients +
+                ", subject='" + subject + '\'' +
+                '}';
+    }
 }
