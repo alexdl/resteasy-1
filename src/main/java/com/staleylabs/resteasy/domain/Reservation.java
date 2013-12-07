@@ -35,6 +35,12 @@ public class Reservation implements Serializable {
 
     private String additionalNotes;
 
+    private int reservationStatus;
+
+    private long creationDate;
+
+    private long lastModifiedDate;
+
     public String getReservationID() {
         return reservationID;
     }
@@ -105,6 +111,30 @@ public class Reservation implements Serializable {
 
     public void setAdditionalNotes(String additionalNotes) {
         this.additionalNotes = additionalNotes;
+    }
+
+    public int getReservationStatus() {
+        return reservationStatus;
+    }
+
+    public void setReservationStatus(int reservationStatus) {
+        this.reservationStatus = reservationStatus;
+    }
+
+    public long getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(long creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public long getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(long lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     @Override

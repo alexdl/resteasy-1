@@ -16,8 +16,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * Customer level service API methods that can be used for all CRUD operations of a customer object.
@@ -91,7 +90,7 @@ public class CustomerApiController {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
         }
 
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     /**
@@ -101,7 +100,7 @@ public class CustomerApiController {
      * @param response   {@link HttpServletResponse} object used to send back error responses if needed.
      */
     @RequestMapping(value = "/delete/{customerID}", method = RequestMethod.DELETE, consumes = "application/json", produces = "application/json")
-    @ResponseStatus(CREATED)
+    @ResponseStatus(NO_CONTENT)
     @ResponseBody
     public void deleteCustomer(@PathVariable String customerID, HttpServletResponse response) {
         LOGGER.debug("Calling the deleteCustomer API...");

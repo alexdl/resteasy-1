@@ -5,9 +5,9 @@ import com.staleylabs.resteasy.domain.Hotel;
 import com.staleylabs.resteasy.domain.Organization;
 import com.staleylabs.resteasy.dto.HotelTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
+import com.staleylabs.resteasy.exception.InsufficientPrivilegeException;
 import com.staleylabs.resteasy.security.SecureRestEasyUser;
 import com.staleylabs.resteasy.service.HotelService;
-import com.sun.servicetag.UnauthorizedAccessException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,14 +44,14 @@ public class HotelServiceProxy implements HotelService {
     }
 
     @Override
-    public void addHotelToOrganization(HotelTO hotelTO, Organization organization) throws UnauthorizedAccessException {
+    public void addHotelToOrganization(HotelTO hotelTO, Organization organization) throws InsufficientPrivilegeException {
         LOGGER.trace("Checking permissions to add hotel to an organization.");
         SecureRestEasyUser user = (SecureRestEasyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (user.getOrganizationID().equals(organization.getId())) {
             hotelServiceImpl.addHotelToOrganization(hotelTO, organization);
         } else {
-            throw new UnauthorizedAccessException("User is not allowed to add hotels to selected organization.");
+            throw new InsufficientPrivilegeException("User is not allowed to add hotels to selected organization.");
         }
     }
 
@@ -79,14 +79,14 @@ public class HotelServiceProxy implements HotelService {
     }
 
     @Override
-    public void addHotelToOrganization(Hotel hotel, Organization organization) throws UnauthorizedAccessException {
+    public void addHotelToOrganization(Hotel hotel, Organization organization) throws InsufficientPrivilegeException {
         LOGGER.trace("Checking permissions to add hotel to an organization.");
         SecureRestEasyUser user = (SecureRestEasyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (user.getOrganizationID().equals(organization.getId())) {
             hotelServiceImpl.addHotelToOrganization(hotel, organization);
         } else {
-            throw new UnauthorizedAccessException("User is not allowed to add hotels to selected organization.");
+            throw new InsufficientPrivilegeException("User is not allowed to add hotels to selected organization.");
         }
     }
 }

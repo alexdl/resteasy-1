@@ -35,6 +35,12 @@ public class ReservationTO {
 
     private String additionalNotes;
 
+    private String reservationStatus;
+
+    private long creationDate;
+
+    private long lastModifiedDate;
+
     public String getReservationID() {
         return reservationID;
     }
@@ -129,6 +135,30 @@ public class ReservationTO {
 
     public void setCustomer(CustomerTO customer) {
         this.customer = customer;
+    }
+
+    public String getReservationStatus() {
+        return reservationStatus;
+    }
+
+    public void setReservationStatus(String reservationStatus) {
+        this.reservationStatus = reservationStatus;
+    }
+
+    public long getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(long creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public long getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(long lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     @Override

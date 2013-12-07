@@ -5,7 +5,7 @@ import com.staleylabs.resteasy.domain.Hotel;
 import com.staleylabs.resteasy.domain.Organization;
 import com.staleylabs.resteasy.dto.HotelTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
-import com.sun.servicetag.UnauthorizedAccessException;
+import com.staleylabs.resteasy.exception.InsufficientPrivilegeException;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,7 +25,7 @@ public interface HotelService {
      * @param hotel        Instance of {@link Hotel} that will be applied to the given organization.
      * @param organization {@link Organization} that the hotel will be applied to.
      */
-    void addHotelToOrganization(Hotel hotel, Organization organization) throws UnauthorizedAccessException;
+    void addHotelToOrganization(Hotel hotel, Organization organization) throws InsufficientPrivilegeException;
 
     /**
      * Applies a new room to a hotel specified by the {@code hotelID}.
@@ -42,7 +42,7 @@ public interface HotelService {
      * @param hotelTO      Instance of {@link HotelTO} that will be applied to the given organization.
      * @param organization {@link Organization} that the hotel will be applied to.
      */
-    void addHotelToOrganization(HotelTO hotelTO, Organization organization) throws UnauthorizedAccessException;
+    void addHotelToOrganization(HotelTO hotelTO, Organization organization) throws InsufficientPrivilegeException;
 
     /**
      * Returns a collection of all of the hotels that are found in the application's data source.

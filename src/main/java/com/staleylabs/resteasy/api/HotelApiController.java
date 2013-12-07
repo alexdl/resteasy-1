@@ -2,6 +2,7 @@ package com.staleylabs.resteasy.api;
 
 import com.staleylabs.resteasy.dao.OrganizationDao;
 import com.staleylabs.resteasy.dto.HotelTO;
+import com.staleylabs.resteasy.exception.InsufficientPrivilegeException;
 import com.staleylabs.resteasy.security.SecureRestEasyUser;
 import com.staleylabs.resteasy.service.HotelService;
 import org.apache.log4j.Logger;
@@ -55,7 +56,7 @@ public class HotelApiController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public void createHotel(@RequestBody HotelTO hotelTO) {
+    public void createHotel(@RequestBody HotelTO hotelTO) throws InsufficientPrivilegeException {
         log.debug("User requesting their hotels.");
 
         SecureRestEasyUser user = (SecureRestEasyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

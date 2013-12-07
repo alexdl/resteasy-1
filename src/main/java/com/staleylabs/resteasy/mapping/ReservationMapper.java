@@ -5,7 +5,6 @@ import com.staleylabs.resteasy.dto.ReservationTO;
 import org.apache.log4j.LogMF;
 import org.apache.log4j.Logger;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -28,19 +27,10 @@ public class ReservationMapper extends ModelMapper {
     private final ModelMapper modelMapper;
 
     /**
-     * Custom mapping for {@link Reservation} --> {@link ReservationTO} objects.
-     */
-    private final PropertyMap<Reservation, ReservationTO> reservationMap = new PropertyMap<Reservation, ReservationTO>() {
-        protected void configure() {
-        }
-    };
-
-    /**
      * Default constructor for the {@link ReservationMapper} object.
      */
     public ReservationMapper() {
         modelMapper = new ModelMapper();
-        modelMapper.addMappings(reservationMap);
     }
 
     /**

@@ -6,9 +6,9 @@ import com.staleylabs.resteasy.dao.HotelDao;
 import com.staleylabs.resteasy.domain.Hotel;
 import com.staleylabs.resteasy.domain.Organization;
 import com.staleylabs.resteasy.dto.HotelTO;
+import com.staleylabs.resteasy.exception.InsufficientPrivilegeException;
 import com.staleylabs.resteasy.mapping.HotelMapper;
 import com.staleylabs.resteasy.service.HotelService;
-import com.sun.servicetag.UnauthorizedAccessException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Update;
@@ -62,7 +62,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public void addHotelToOrganization(HotelTO hotelTO, Organization organization) throws UnauthorizedAccessException {
+    public void addHotelToOrganization(HotelTO hotelTO, Organization organization) throws InsufficientPrivilegeException {
         // Create the hotel entity.
         Hotel newHotel = new Hotel();
         newHotel.setHotelName(hotelTO.getHotelName());
@@ -97,7 +97,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public void addHotelToOrganization(Hotel hotel, Organization organization) throws UnauthorizedAccessException {
+    public void addHotelToOrganization(Hotel hotel, Organization organization) throws InsufficientPrivilegeException {
         hotelDao.save(hotel);
     }
 }
