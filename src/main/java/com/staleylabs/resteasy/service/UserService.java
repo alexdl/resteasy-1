@@ -24,7 +24,7 @@ public interface UserService {
      * @param id {@link String} representation of the User's ID.
      * @return {@link UserTO} object that represents the user found in the data source.
      */
-    UserTO getUserByID(String id);
+    UserTO getUserByID(final String id);
 
     /**
      * Gets all users found in the application's data source.
@@ -58,7 +58,7 @@ public interface UserService {
      *          Occurs when there is not enough information to build the user to the
      *          data source.
      */
-    UserTO createUser(RegisteringUser user) throws InsufficientInformationException;
+    UserTO createUser(final RegisteringUser user) throws InsufficientInformationException;
 
     /**
      * Obtains a list of users within a given range. This would be utilized for getting a page of user objects.
@@ -66,7 +66,7 @@ public interface UserService {
      * @param pageNumber The current page that the end user is viewing in the admin console.
      * @return {@link List} of {@link UserTO} objects on the given {@code pageNumber}.
      */
-    List<UserTO> getSubsetAllUsers(int pageNumber);
+    List<UserTO> getSubsetAllUsers(final int pageNumber) throws InsufficientPrivilegeException;
 
     /**
      * Deletes a given user from the application by a user ID instead of object.
@@ -75,7 +75,7 @@ public interface UserService {
      * @throws InsufficientPrivilegeException Occurs when the user is not an {@code ROLE_ADMIN} user or is not trying
      *                                        to remove their own account from the system.
      */
-    void deleteUserById(String userId) throws InsufficientPrivilegeException;
+    void deleteUserById(final String userId) throws InsufficientPrivilegeException;
 
     /**
      * Updates a given user based on {@code userID} with a list of new {@code organizationIDs}.
@@ -84,5 +84,5 @@ public interface UserService {
      * @param organizationID {@link String} ID for the organization associated with a user. The ID can be {@code null}.
      * @return The new user object for a given user.
      */
-    UserTO updateUserOrganizations(String userId, String organizationID);
+    UserTO updateUserOrganizations(final String userId, String organizationID);
 }

@@ -9,15 +9,14 @@ import com.staleylabs.resteasy.service.UserService;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -29,7 +28,7 @@ import static org.springframework.http.HttpStatus.*;
  * @version 1.0 (6/2/13)
  */
 
-@Controller
+@RestController
 @RequestMapping(value = "/api/user")
 public class UserApiController {
 
@@ -68,7 +67,7 @@ public class UserApiController {
      */
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(OK)
-    public List getAllUsers(HttpServletResponse response) throws IOException {
+    public Collection<UserTO> getAllUsers(HttpServletResponse response) throws IOException {
         log.debug("Requesting all users!");
 
         try {
@@ -77,12 +76,12 @@ public class UserApiController {
             response.sendError(HttpStatus.SC_FORBIDDEN, Arrays.toString(e.getStackTrace()));
         }
 
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     @RequestMapping(value = "/{pageNumber}", method = RequestMethod.GET)
     @ResponseStatus(OK)
-    public List<UserTO> getAllUsersBySet(@PathVariable int pageNumber) {
+    public Collection<UserTO> getAllUsersBySet(@PathVariable int pageNumber) throws InsufficientPrivilegeException {
         return userService.getSubsetAllUsers(pageNumber);
     }
 

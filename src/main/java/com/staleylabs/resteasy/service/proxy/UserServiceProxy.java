@@ -27,7 +27,7 @@ public class UserServiceProxy implements UserService {
     private UserService userServiceImpl;
 
     @Override
-    public UserTO getUserByID(String id) {
+    public UserTO getUserByID(final String id) {
         return userServiceImpl.getUserByID(id);
     }
 
@@ -44,7 +44,7 @@ public class UserServiceProxy implements UserService {
     }
 
     @Override
-    public UserTO getUserTO(String userID, String username) {
+    public UserTO getUserTO(final String userID, String username) {
         return userServiceImpl.getUserTO(userID, username);
     }
 
@@ -61,8 +61,15 @@ public class UserServiceProxy implements UserService {
     }
 
     @Override
-    public List<UserTO> getSubsetAllUsers(int pageNumber) {
-        return userServiceImpl.getSubsetAllUsers(pageNumber);
+    public List<UserTO> getSubsetAllUsers(final int pageNumber) throws InsufficientPrivilegeException {
+        SecureRestEasyUser user = (SecureRestEasyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        for (GrantedAuthority authority : user.getAuthorities()) {
+            if (authority.getAuthority().equals("ROLE_ADMIN")) {
+                return userServiceImpl.getSubsetAllUsers(pageNumber);
+            }
+        }
+        throw new InsufficientPrivilegeException();
     }
 
     @Override
@@ -90,7 +97,7 @@ public class UserServiceProxy implements UserService {
     }
 
     @Override
-    public UserTO updateUserOrganizations(String userId, String organizationID) {
+    public UserTO updateUserOrganizations(final String userId, String organizationID) {
         return userServiceImpl.updateUserOrganizations(userId, organizationID);
     }
 }
