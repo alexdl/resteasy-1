@@ -10,11 +10,11 @@ import com.staleylabs.resteasy.exception.InsufficientPrivilegeException;
 import com.staleylabs.resteasy.mapping.HotelMapper;
 import com.staleylabs.resteasy.service.HotelService;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -32,10 +32,10 @@ public class HotelServiceImpl implements HotelService {
 
     private static final Logger LOGGER = Logger.getLogger(HotelServiceImpl.class.getName());
 
-    @Autowired
+    @Inject
     private HotelDao hotelDao;
 
-    @Autowired
+    @Inject
     private HotelMapper hotelMapper;
 
     @Override

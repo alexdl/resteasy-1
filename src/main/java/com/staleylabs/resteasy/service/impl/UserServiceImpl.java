@@ -1,12 +1,14 @@
 package com.staleylabs.resteasy.service.impl;
 
 import com.staleylabs.resteasy.beans.forms.RegisteringUser;
+import com.staleylabs.resteasy.beans.mail.Letter;
 import com.staleylabs.resteasy.dao.UserDao;
 import com.staleylabs.resteasy.domain.User;
 import com.staleylabs.resteasy.dto.UserTO;
 import com.staleylabs.resteasy.exception.InsufficientInformationException;
 import com.staleylabs.resteasy.exception.InsufficientPrivilegeException;
 import com.staleylabs.resteasy.globals.RestEasyGlobals;
+import com.staleylabs.resteasy.mail.MailEngine;
 import com.staleylabs.resteasy.mapping.UserMapper;
 import com.staleylabs.resteasy.service.ContactService;
 import com.staleylabs.resteasy.service.OrganizationService;
@@ -144,6 +146,17 @@ public class UserServiceImpl implements UserService {
         userDao.save(userObject);
 
         log.info("Finished creating new user " + username);
+
+        final Letter letter = new Letter();
+        letter.setReceiverName(userObject.getFirstName() + " " + userObject.getLastName());
+        letter.setReceiverEmail(userObject.getEmailAddress());
+        letter.setSenderEmail("no-reply@staleylabs.com");
+        letter.setSenderName("RestEasy Administrator");
+        letter.setSubject("Welcome to RestEasy!");
+        letter.setHtmlBody("<i>Welcome to RestEasy!</i><br>Click here to go to the <a href=\"resteasy.herokuapp.com\">site</a>.");
+        letter.setTextBody("Welcome to RestEasy!");
+
+        log.info("Sending welcome email was a " + MailEngine.sendMessage(letter));
 
         return userMapper.transformUser(userDao.getUserByUsername(user.getUsername()));
     }

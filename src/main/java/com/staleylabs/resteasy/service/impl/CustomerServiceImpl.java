@@ -9,9 +9,9 @@ import com.staleylabs.resteasy.mapping.CustomerMapper;
 import com.staleylabs.resteasy.service.CustomerService;
 import org.apache.log4j.LogMF;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.util.Collection;
 
 /**
@@ -26,10 +26,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     private static final Logger log = Logger.getLogger(CustomerServiceImpl.class.getName());
 
-    @Autowired
+    @Inject
     private CustomerDao customerDao;
 
-    @Autowired
+    @Inject
     private CustomerMapper customerMapper;
 
     @Override

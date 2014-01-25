@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
  * @author Sean M. Staley
  * @version 1.0 (8/11/13)
  */
+
 @Component
 public final class RestEasyGlobals {
 

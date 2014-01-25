@@ -9,6 +9,9 @@
 
 <!-- Placed at the end of the document so the pages load faster -->
 <script type="text/javascript" src='<c:url value="/resources/vendor/jquery/jquery-1.10.1.min.js"/>'></script>
+<script type="text/javascript" src='<c:url value="/resources/vendor/handlebars/handlebars-1.0.js"/>'></script>
+<script type="text/javascript" src='<c:url value="/resources/vendor/ember/ember-1.3.0.js"/>'></script>
+<script type="text/javascript" src='<c:url value="/resources/vendor/ember/ember-data-1.0.0.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/vendor/bootstrap/js/bootstrap.min.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/vendor/bootstrap/js/bootstrap-alert.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/vendor/bootstrap/js/bootstrap-button.js"/>'></script>
@@ -21,5 +24,6 @@
 <script type="text/javascript" src='<c:url value="/resources/vendor/bootstrap/js/bootstrap-tab.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/vendor/bootstrap/js/bootstrap-transition.js"/>'></script>
 <script type="text/javascript" src='<c:url value="/resources/vendor/bootstrap/js/bootstrap-typeahead.js"/>'></script>
-<script type="text/javascript" src='http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBQZ0_uW5KIx_PQNoicqOBuTl7KMSltebs&sensor=true'></script>
+<script type="text/javascript"
+        src='http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBQZ0_uW5KIx_PQNoicqOBuTl7KMSltebs&sensor=true'></script>
 <script type="text/javascript" src='<c:url value="/resources/js/main.js"/>'></script>

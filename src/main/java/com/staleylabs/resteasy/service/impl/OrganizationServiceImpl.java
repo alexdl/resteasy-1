@@ -14,9 +14,9 @@ import com.staleylabs.resteasy.service.ContactService;
 import com.staleylabs.resteasy.service.OrganizationService;
 import com.staleylabs.resteasy.service.UserService;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -32,19 +32,19 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private static final Logger log = Logger.getLogger(OrganizationServiceImpl.class.getName());
 
-    @Autowired
+    @Inject
     private ContactService contactService;
 
-    @Autowired
+    @Inject
     private OrganizationDao organizationDao;
 
-    @Autowired
+    @Inject
     private OrganizationMapper organizationMapper;
 
-    @Autowired
+    @Inject
     private UserDao userDao;
 
-    @Autowired
+    @Inject
     private UserService userServiceImpl;
 
     @Override
