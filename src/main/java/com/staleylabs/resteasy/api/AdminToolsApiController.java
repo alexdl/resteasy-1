@@ -2,11 +2,10 @@ package com.staleylabs.resteasy.api;
 
 import com.staleylabs.resteasy.beans.EmailMessage;
 import com.staleylabs.resteasy.mail.Mailer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -18,11 +17,11 @@ import java.io.IOException;
  * @version 1.0 (9/8/13)
  */
 
-@Controller
+@RestController
 @RequestMapping(value = "/api/admin")
 public class AdminToolsApiController {
 
-    @Autowired
+    @Inject
     private Mailer mailman;
 
     @RequestMapping(value = "/mail/test", method = RequestMethod.POST, consumes = "application/json")

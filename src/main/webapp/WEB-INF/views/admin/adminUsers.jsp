@@ -9,14 +9,20 @@
 
     <div id="systemTabs" class="tabs tabbable tabs-left">
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#people" data-toggle="tab">Users</a></li>
+            <li class="active"><a id="peopleSubTab" href="#people" data-toggle="tab">Users</a></li>
             <li><a href="#organizations" data-toggle="tab">Organizations</a></li>
+            <li><a href="#createPeople" data-toggle="tab">Create User</a></li>
+            <li><a href="#createOrganization" data-toggle="tab">Create Organization</a></li>
         </ul>
         <div class="tab-content">
 
             <c:import url="users/userPeople.jsp"/>
 
             <c:import url="users/userOrganizations.jsp"/>
+
+            <c:import url="users/userPeopleCreate.jsp"/>
+
+            <c:import url="users/userOrganizationCreate.jsp"/>
         </div>
     </div>
 </div>

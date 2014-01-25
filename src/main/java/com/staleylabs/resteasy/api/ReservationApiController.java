@@ -5,10 +5,9 @@ import com.staleylabs.resteasy.exception.InsufficientInformationException;
 import com.staleylabs.resteasy.service.ReservationService;
 import org.apache.log4j.LogMF;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
@@ -24,13 +23,13 @@ import static org.springframework.http.HttpStatus.*;
  * @version 1.0 (9/2/13)
  */
 
-@Controller
+@RestController
 @RequestMapping(value = "/api/reservation")
 public class ReservationApiController {
 
     private static final Logger LOGGER = Logger.getLogger(ReservationApiController.class.getName());
 
-    @Autowired
+    @Inject
     private ReservationService reservationService;
 
     /**
@@ -105,7 +104,6 @@ public class ReservationApiController {
      */
     @RequestMapping(value = "/{reservationID}", method = RequestMethod.GET, produces = "application/json")
     @ResponseStatus(OK)
-    @ResponseBody
     public ReservationTO getReservation(@PathVariable String reservationID, HttpServletResponse response) throws IOException {
         LogMF.debug(LOGGER, "Grabbing reservation {0} for viewing.", reservationID);
 

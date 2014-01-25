@@ -13,7 +13,6 @@ import com.staleylabs.resteasy.service.OrganizationService;
 import com.staleylabs.resteasy.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -23,6 +22,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -40,25 +40,25 @@ public class UserServiceImpl implements UserService {
 
     private static final Logger log = Logger.getLogger(UserServiceImpl.class);
 
-    @Autowired
+    @Inject
     private BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
+    @Inject
     private ContactService contactService;
 
-    @Autowired
+    @Inject
     private MongoOperations mongoOperations;
 
-    @Autowired
+    @Inject
     private OrganizationService organizationService;
 
-    @Autowired
+    @Inject
     private RestEasyGlobals restEasyGlobals;
 
-    @Autowired
+    @Inject
     private UserDao userDao;
 
-    @Autowired
+    @Inject
     private UserMapper userMapper;
 
     @Override
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
 
         String organizationID = organizationService.getIdFromOrganizationName(user.getOrganizationName());
 
-        if (organizationID == null) {
+        if (organizationID == null && StringUtils.isNotBlank(user.getOrganizationName())) {
             userObject.setOrganizationId(organizationService.generateOrganizationFromRegisteringUser(user).getId());
         } else {
             userObject.setOrganizationId(organizationID);

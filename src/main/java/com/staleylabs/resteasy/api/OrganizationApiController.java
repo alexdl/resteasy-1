@@ -6,11 +6,10 @@ import com.staleylabs.resteasy.exception.InsufficientPrivilegeException;
 import com.staleylabs.resteasy.security.SecureRestEasyUser;
 import com.staleylabs.resteasy.service.OrganizationService;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -24,13 +23,13 @@ import static org.springframework.http.HttpStatus.*;
  * @version 1.0 (8/18/13)
  */
 
-@Controller
+@RestController
 @RequestMapping(value = "/api/organization")
 public class OrganizationApiController {
 
     private static final Logger LOGGER = Logger.getLogger(OrganizationApiController.class.getName());
 
-    @Autowired
+    @Inject
     private OrganizationService organizationService;
 
     /**
@@ -40,7 +39,6 @@ public class OrganizationApiController {
      */
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(OK)
-    @ResponseBody
     public List<OrganizationTO> getAllOrganizations() {
         LOGGER.debug("Requesting all organizations!");
 
@@ -54,7 +52,6 @@ public class OrganizationApiController {
      */
     @RequestMapping(method = RequestMethod.GET, value = "/user")
     @ResponseStatus(OK)
-    @ResponseBody
     public OrganizationTO getUserOrganizations() {
         LOGGER.debug("Requesting user's organizations!");
 
@@ -67,8 +64,7 @@ public class OrganizationApiController {
      * Service used to add an organization to the application.
      *
      * @param organization {@link OrganizationTO} entity used to generate the new organization.
-     * @throws InsufficientInformationException
-     *          Thrown if there missing information that is required to be there.
+     * @throws InsufficientInformationException Thrown if there missing information that is required to be there.
      */
     @RequestMapping(method = RequestMethod.POST, value = "/add")
     @ResponseStatus(CREATED)

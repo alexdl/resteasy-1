@@ -4,7 +4,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Entity that represents a reservation.
@@ -23,9 +22,9 @@ public class Reservation implements Serializable {
 
     private String customerID;
 
-    private Date customerCheckIn;
+    private long customerCheckIn;
 
-    private Date customerCheckOut;
+    private long customerCheckOut;
 
     private double baseCost;
 
@@ -65,19 +64,19 @@ public class Reservation implements Serializable {
         this.customerID = customerID;
     }
 
-    public Date getCustomerCheckIn() {
+    public long getCustomerCheckIn() {
         return customerCheckIn;
     }
 
-    public void setCustomerCheckIn(Date customerCheckIn) {
+    public void setCustomerCheckIn(long customerCheckIn) {
         this.customerCheckIn = customerCheckIn;
     }
 
-    public Date getCustomerCheckOut() {
+    public long getCustomerCheckOut() {
         return customerCheckOut;
     }
 
-    public void setCustomerCheckOut(Date customerCheckOut) {
+    public void setCustomerCheckOut(long customerCheckOut) {
         this.customerCheckOut = customerCheckOut;
     }
 
@@ -157,10 +156,10 @@ public class Reservation implements Serializable {
         if (Double.compare(that.taxCost, taxCost) != 0) {
             return false;
         }
-        if (!customerCheckIn.equals(that.customerCheckIn)) {
+        if (customerCheckIn != that.customerCheckIn) {
             return false;
         }
-        if (!customerCheckOut.equals(that.customerCheckOut)) {
+        if (customerCheckOut != that.customerCheckOut) {
             return false;
         }
         if (!customerID.equals(that.customerID)) {
@@ -183,8 +182,6 @@ public class Reservation implements Serializable {
         result = reservationID != null ? reservationID.hashCode() : 0;
         result = 31 * result + hotelID.hashCode();
         result = 31 * result + customerID.hashCode();
-        result = 31 * result + customerCheckIn.hashCode();
-        result = 31 * result + customerCheckOut.hashCode();
         temp = Double.doubleToLongBits(baseCost);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(additionalCost);

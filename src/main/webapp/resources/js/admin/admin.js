@@ -7,11 +7,10 @@
  */
 var USER_PAGE_NUMBER = 1;
 
-
 $(document).ready(function () {
     $('.tabs').tab();
 
-    $('#userTab').one('click', function () {
+    $('#userTab, #peopleSubTab').on('click', function () {
         var url = "/api/user/" + USER_PAGE_NUMBER;
 
         $.ajax({
@@ -20,6 +19,8 @@ $(document).ready(function () {
             timeout: 5000,
             type: 'GET',
             success: function (msg) {
+                $('#userTable tbody').empty();
+
                 if (msg) {
                     for (var i in msg) {
                         var user = msg[i];
@@ -27,9 +28,9 @@ $(document).ready(function () {
                         var username = user.username;
                         var fullName = user.firstName + ' ' + user.lastName;
 
-                        $('#userTable tr:last').after(
+                        $('#userTable').find('tbody:last').append(
                             '<tr><td>' + user.id + '</td>' +
-                                '<td><a href="/admin/user/"' + username + '">' + username + '</a></td>' +
+                                '<td><a href="/admin/user/' + username + '">' + username + '</a></td>' +
                                 '<td>' + fullName + '</td>' +
                                 '<td>' + user.emailAddress + '</td>' +
                                 '<td>' + user.enabled + '</td>' +
@@ -41,7 +42,7 @@ $(document).ready(function () {
         });
     });
 
-    $('#savePropertyBtn').on('click', function() {
+    $('#savePropertyBtn').on('click', function () {
         var url = "/admin/applySystemProperty";
 
         $('#propertyProgressBar').removeClass('hidden');
@@ -50,7 +51,7 @@ $(document).ready(function () {
             url: url,
             dataType: 'json',
             data: {"propertyKey": $('#propertyKey').val(),
-                   "propertyValue": $('#propertyValue').val()},
+                "propertyValue": $('#propertyValue').val()},
             timeout: 5000,
             type: 'POST',
             success: function (msg) {
@@ -59,5 +60,56 @@ $(document).ready(function () {
                 }
             }
         });
+    });
+
+    $('#createUserButton').click(function () {
+        var registeringUser = {
+            username: $('#usernameInput').val(),
+            password: $('#passwordInput').val(),
+            firstName: $('#firstNameInput').val(),
+            middleName: $('#middleNameInput').val(),
+            lastName: $('#lastNameInput').val(),
+            addressLine1: $('#addressLine1Input').val(),
+            addressLine2: $('#addressLine2Input').val(),
+            cityName: $('#cityInput').val(),
+            stateCode: $('#stateInput').val(),
+            postalCode: $('#postalCodeInput').val(),
+            personalPhoneNumber: $('#personalPhoneInput').val(),
+            email: $('#emailInput').val()
+
+        };
+
+        console.log(registeringUser);
+
+        $.ajax({
+            url: "/api/user/create",
+            contentType: 'application/json',
+            dataType: 'json',
+            timeout: 5000,
+            type: 'POST',
+            data: JSON.stringify(registeringUser),
+            success: function (msg) {
+                console.log(msg);
+            },
+            error: function (msg) {
+                console.log(msg);
+            }
+        });
+    });
+
+    $('#deleteUserBtn').click(function () {
+        if (confirm("You really want to do this?")) {
+            var userId = $('#userId').text();
+
+            $.ajax({
+                url: "/api/user/delete/" + userId,
+                timeout: 5000,
+                type: 'DELETE',
+                success: function (msg) {
+                    alert("The user has been deleted.");
+                    document.location.href = '/admin';
+                }
+            });
+        }
     })
 });

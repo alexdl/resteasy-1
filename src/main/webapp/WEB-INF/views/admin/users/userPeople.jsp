@@ -7,6 +7,7 @@
     </legend>
 
     <table id="userTable" class="table table-striped table-condensed">
+        <thead>
         <tr>
             <th>ID</th>
             <th>Username</th>
@@ -14,5 +15,8 @@
             <th>Email</th>
             <th>Enabled</th>
         </tr>
+        </thead>
+        <tbody>
+        </tbody>
     </table>
 </div>

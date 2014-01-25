@@ -9,10 +9,10 @@ import com.staleylabs.resteasy.service.UserService;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
@@ -35,7 +35,7 @@ public class UserApiController {
 
     private static final Logger log = Logger.getLogger(UserApiController.class.getName());
 
-    @Autowired
+    @Inject
     protected UserService userService;
 
     /**
@@ -46,7 +46,6 @@ public class UserApiController {
      */
     @RequestMapping(value = "/id/{userId}", method = RequestMethod.GET)
     @ResponseStatus(OK)
-    @ResponseBody
     public UserTO getUserByUserId(@PathVariable String userId) {
         return userService.getUserByID(userId);
     }
@@ -58,7 +57,6 @@ public class UserApiController {
      */
     @RequestMapping(value = "/username/{username}", method = RequestMethod.GET)
     @ResponseStatus(OK)
-    @ResponseBody
     public UserTO getUserByUsername(@PathVariable String username) {
         return userService.getUserTO(null, username);
     }
@@ -70,7 +68,6 @@ public class UserApiController {
      */
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(OK)
-    @ResponseBody
     public List getAllUsers(HttpServletResponse response) throws IOException {
         log.debug("Requesting all users!");
 
@@ -84,7 +81,6 @@ public class UserApiController {
     }
 
     @RequestMapping(value = "/{pageNumber}", method = RequestMethod.GET)
-    @ResponseBody
     @ResponseStatus(OK)
     public List<UserTO> getAllUsersBySet(@PathVariable int pageNumber) {
         return userService.getSubsetAllUsers(pageNumber);
@@ -108,11 +104,10 @@ public class UserApiController {
      * @param user     {@link User} that represented in the RequestBody as an <code>application/json</code> type.
      * @param response Parameter that will have the status set once the API call returns, with or without errors.
      * @return {@link UserTO} object that embodies the newly created user. Also comes with a status code of <code>200</code>
-     *         if the process did work correctly.
+     * if the process did work correctly.
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = "application/json")
     @ResponseStatus(CREATED)
-    @ResponseBody
     public UserTO createUser(@RequestBody RegisteringUser user, HttpServletResponse response) throws IOException {
         UserTO userTO = null;
 
@@ -129,7 +124,6 @@ public class UserApiController {
 
     @RequestMapping(value = "/delete/{userId}", method = RequestMethod.DELETE, produces = "application/json")
     @ResponseStatus(NO_CONTENT)
-    @ResponseBody
     public void removeUser(@PathVariable String userId, HttpServletResponse response) throws IOException {
         log.info("Removing user with ID " + userId + " from application...");
 

@@ -114,4 +114,19 @@ public class UserTO implements Serializable {
     public void setOrganizationId(String organizationId) {
         this.organizationId = organizationId;
     }
+
+    @Override
+    public String toString() {
+        return "UserTO{" +
+                "id='" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", enabled=" + enabled +
+                ", creationDate=" + creationDate +
+                ", lastLoggedIn=" + lastLoggedIn +
+                '}';
+    }
 }

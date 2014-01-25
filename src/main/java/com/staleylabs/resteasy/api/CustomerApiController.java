@@ -7,10 +7,9 @@ import com.staleylabs.resteasy.service.CustomerService;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
@@ -25,13 +24,13 @@ import static org.springframework.http.HttpStatus.*;
  * @version 1.0 (9/7/13)
  */
 
-@Controller
+@RestController
 @RequestMapping(value = "/api/customer")
 public class CustomerApiController {
 
     private static final Logger LOGGER = Logger.getLogger(CustomerApiController.class);
 
-    @Autowired
+    @Inject
     private CustomerService customerService;
 
     /**
@@ -42,7 +41,6 @@ public class CustomerApiController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     @ResponseStatus(CREATED)
-    @ResponseBody
     public void addCustomer(@RequestBody CustomerTO customerTO, HttpServletResponse response) throws IOException {
         LOGGER.debug("Calling the addCustomer API...");
 
@@ -62,7 +60,6 @@ public class CustomerApiController {
      */
     @RequestMapping(value = "/{customerID}", method = RequestMethod.GET, produces = "application/json")
     @ResponseStatus(OK)
-    @ResponseBody
     public CustomerTO getCustomerByID(@PathVariable String customerID, HttpServletResponse response) throws IOException {
         LOGGER.debug("Calling the getCustomerByID API...");
 
@@ -80,7 +77,6 @@ public class CustomerApiController {
      */
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ResponseStatus(OK)
-    @ResponseBody
     public Collection<CustomerTO> getAllCustomers(HttpServletResponse response) throws IOException {
         LOGGER.debug("Calling the getAllCustomers API...");
 
@@ -101,7 +97,6 @@ public class CustomerApiController {
      */
     @RequestMapping(value = "/delete/{customerID}", method = RequestMethod.DELETE, consumes = "application/json", produces = "application/json")
     @ResponseStatus(NO_CONTENT)
-    @ResponseBody
     public void deleteCustomer(@PathVariable String customerID, HttpServletResponse response) {
         LOGGER.debug("Calling the deleteCustomer API...");
 
