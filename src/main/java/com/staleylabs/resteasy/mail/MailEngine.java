@@ -26,6 +26,8 @@ public final class MailEngine {
         envelope.setHtml(letter.getHtmlBody());
         envelope.setText(letter.getTextBody());
 
+        envelope.setSubject(letter.getSubject());
+
         return envelope.send();
     }
 }
